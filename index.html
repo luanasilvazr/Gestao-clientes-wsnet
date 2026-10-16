@@ -1,42 +1,807 @@
+
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Gestão de Clientes WSNET</title>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gestão de Clientes WSNET</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
 <style>
-:root{--fundo:#071a33;--card:#0b2545;--texto:#edf4ff;--sec:#b7c9df;--azul:#d8e9ff;--botao:#1d5fa7;--claro:#123a63;--borda:#25496f;--sombra:rgba(0,0,0,.28)}body.modo-noturno{--fundo:#030d1b;--card:#071a33;--texto:#edf4ff;--sec:#a8bfd9;--azul:#d8e9ff;--botao:#246fbd;--claro:#0b2545;--borda:#1b3b5e;--sombra:rgba(0,0,0,.4)}*{box-sizing:border-box}body{margin:0;padding:30px 16px;font-family:Poppins,sans-serif;background:var(--fundo);color:var(--texto);min-height:100vh}.container-principal{max-width:1250px;margin:auto;background:var(--card);border:1px solid var(--borda);border-radius:14px;box-shadow:0 8px 25px var(--sombra);overflow:hidden}.topo{padding:28px 30px;border-bottom:1px solid var(--borda);background:linear-gradient(135deg,var(--card),var(--claro))}.topo-conteudo{display:flex;align-items:center;justify-content:space-between;gap:24px}.titulo-area{flex:1;text-align:center}.titulo{font-size:32px;color:var(--azul);font-weight:600;margin:0}.subtitulo{font-size:14px;color:var(--sec);margin:8px auto 0;max-width:750px}.lembrete-topo{display:none;width:330px;padding:14px 17px;background:#dcfce7;color:#166534;border:1px solid #86efac;border-left:5px solid #22c55e;border-radius:9px}.lembrete-titulo{font-size:13px;font-weight:700}.lembrete-nomes{font-size:14px}.area-controles{padding:18px 30px;border-bottom:1px solid var(--borda);display:flex;align-items:center;justify-content:space-between;gap:12px}.acoes-principais,.acoes-secundarias{display:flex;gap:9px;flex-wrap:wrap}.btn{font-family:Poppins,sans-serif;font-size:13px;border-radius:7px;padding:9px 14px}.btn-adicionar{background:var(--botao);border-color:var(--botao);color:#fff}.btn-adicionar:hover,.btn-adicionar:focus{background:#2878c8;border-color:#2878c8;color:#fff}.btn-tema{color:var(--sec);border-color:var(--borda)}.status-notificacao{padding:0 30px 12px;color:var(--sec);font-size:12px}.tabela-area{padding:5px 20px 25px}.table{min-width:900px;border-collapse:separate;border-spacing:0 7px;color:var(--texto)}.table th{border:0;padding:8px}.cabecalho-card{padding:12px 8px;background:var(--claro);border:1px solid var(--borda);border-radius:7px;color:var(--texto);font-size:12px;font-weight:700;text-transform:uppercase}.table td{padding:9px;border-top:1px solid var(--borda);border-bottom:1px solid var(--borda);vertical-align:middle;text-align:center;background:var(--card)}.table td:first-child{border-left:1px solid var(--borda);border-radius:8px 0 0 8px}.table td:last-child{border-right:1px solid var(--borda);border-radius:0 8px 8px 0}.form-control,.form-select{min-height:41px;background:var(--card);color:var(--texto);border:1px solid var(--borda);font-family:Poppins,sans-serif;font-size:13px}.form-control:focus,.form-select:focus{background:var(--card);color:var(--texto);border-color:#5ca3e6;box-shadow:0 0 0 .2rem rgba(92,163,230,.2)}.form-control::placeholder{color:#9db2ca;opacity:1}.form-select option{background:var(--card);color:var(--texto)}.border-success{border-color:#72b98b!important}.text-success{color:#198754!important}.border-danger{border-color:#e58b94!important}.text-danger{color:#dc3545!important}.border-orange{border-color:#e6a05f!important}.text-orange{color:#d97706!important}.auth-wrap{max-width:470px;margin:30px auto;padding:0 20px 25px}.auth-card{padding:24px;background:var(--card);border:1px solid var(--borda);border-radius:12px}.auth-card h2{font-size:22px;color:var(--azul)}.auth-card label{font-size:13px;margin-bottom:5px}.barra-usuario{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 30px;border-bottom:1px solid var(--borda);font-size:13px;color:var(--sec)}.admin-filtro{display:none;align-items:center;gap:8px}.admin-filtro label{white-space:nowrap}.alert-app{margin:15px 20px 0;font-size:13px;white-space:pre-wrap}.vazio{padding:24px!important;color:var(--sec)!important}.marca-dagua{text-align:center;padding:20px;color:var(--sec);font-size:12px;opacity:.7}@media(max-width:900px){body{padding:12px}.topo-conteudo{flex-direction:column}.lembrete-topo{width:100%}.area-controles{flex-direction:column;align-items:stretch}.acoes-principais,.acoes-secundarias{justify-content:center}.barra-usuario{flex-wrap:wrap;padding:12px 18px}.admin-filtro{width:100%}}@media(max-width:600px){.titulo{font-size:26px}.acoes-principais,.acoes-secundarias{flex-direction:column;width:100%}.acoes-principais .btn,.acoes-secundarias .btn{width:100%}.barra-usuario{flex-direction:column;align-items:stretch}}
-</style></head><body><div class="container-principal"><header class="topo"><div class="topo-conteudo"><div id="lembreteTopo" class="lembrete-topo"><div class="lembrete-titulo">🔔 CHAMAR HOJE</div><div id="nomesHoje" class="lembrete-nomes"></div></div><div class="titulo-area"><h1 class="titulo">Gestão de Clientes</h1><p class="subtitulo">Planilha para acompanhar clientes renegociados, identificar quem precisa de suspensão ou realizar outra tratativa.</p></div></div></header>
-<section id="telaLogin" class="auth-wrap"><div class="auth-card"><h2 class="text-center mb-2">Acessar o sistema</h2><p class="text-center mb-4" style="font-size:13px;color:var(--sec)">Entre com o e-mail e a senha cadastrados pela administradora.</p><form id="formLogin"><div class="mb-3"><label for="emailLogin">E-mail</label><input id="emailLogin" class="form-control" type="email" autocomplete="username" required placeholder="seu.email@empresa.com"></div><div class="mb-3"><label for="senhaLogin">Senha</label><input id="senhaLogin" class="form-control" type="password" autocomplete="current-password" required placeholder="Sua senha"></div><button id="btnEntrar" class="btn btn-primary btn-adicionar w-100" type="submit">Entrar</button></form><div id="mensagemLogin" class="small mt-3" role="status" aria-live="polite"></div><div class="text-center mt-3"><button id="btnEsqueciSenha" class="btn btn-link" type="button" style="font-size:13px">Esqueci minha senha</button></div></div></section>
-<section id="telaRedefinirSenha" class="auth-wrap" hidden><div class="auth-card"><h2 class="text-center mb-2">Criar nova senha</h2><p class="text-center mb-4" style="font-size:13px;color:var(--sec)">Digite e confirme a nova senha para acessar o sistema.</p><form id="formRedefinirSenha"><div class="mb-3"><label for="novaSenha">Nova senha</label><input id="novaSenha" class="form-control" type="password" autocomplete="new-password" minlength="8" required placeholder="Mínimo de 8 caracteres"></div><div class="mb-3"><label for="confirmarNovaSenha">Confirme a nova senha</label><input id="confirmarNovaSenha" class="form-control" type="password" autocomplete="new-password" minlength="8" required placeholder="Digite a senha novamente"></div><button id="btnSalvarNovaSenha" class="btn btn-primary btn-adicionar w-100" type="submit">Salvar nova senha</button></form><div id="mensagemRedefinirSenha" class="small mt-3" role="status" aria-live="polite"></div><div class="text-center mt-3"><button id="btnVoltarLogin" class="btn btn-link" type="button" style="font-size:13px">Voltar para o login</button></div></div></section>
-<div id="appProtegido" hidden><div class="barra-usuario"><div id="infoUsuario"></div><div class="d-flex gap-2 align-items-center flex-wrap"><div id="filtroAdmin" class="admin-filtro"><label for="filtroResponsavel">Filtrar colaborador:</label><select id="filtroResponsavel" class="form-select form-select-sm"><option value="todos">Todos os colaboradores</option></select></div><button id="btnSair" class="btn btn-outline-secondary btn-sm" type="button">Sair</button></div></div><section class="area-controles"><div class="acoes-principais"><button id="btnAdicionar" class="btn btn-primary btn-adicionar" type="button">+ Adicionar cliente</button><button id="btnAtivarNotificacao" class="btn btn-outline-success" type="button">🔔 Ativar notificações</button></div><div class="acoes-secundarias"><button id="btnTema" class="btn btn-outline-secondary btn-tema" type="button">🌙 Modo noturno</button></div></section><div id="statusNotificacao" class="status-notificacao"></div><div id="mensagemApp" class="alert alert-app" hidden role="status" aria-live="polite"></div><section class="tabela-area"><div class="table-responsive"><table class="table align-middle"><thead><tr><th><div class="cabecalho-card">Código e Cliente</div></th><th><div class="cabecalho-card">Data</div></th><th><div class="cabecalho-card">Status</div></th><th><div class="cabecalho-card">Observações</div></th><th id="cabecalhoResponsavel" hidden><div class="cabecalho-card">Responsável</div></th><th><div class="cabecalho-card">Ações</div></th></tr></thead><tbody id="tabelaClientes"></tbody></table></div></section></div></div><footer class="marca-dagua">© 2026 WSNET — Luana Silva</footer>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script>
-// Use somente a chave publicável no navegador. Nunca exponha service_role ou sb_secret.
-const SUPABASE_URL="https://owpyuoobfpnutcgnniac.supabase.co";
-const SUPABASE_PUBLISHABLE_KEY="sb_publishable_d4riCEOAuQV3pstweSCHvw_fFNe_qpj";
-const $=id=>document.getElementById(id);const tabelaClientes=$("tabelaClientes"),telaLogin=$("telaLogin"),telaRedefinirSenha=$("telaRedefinirSenha"),appProtegido=$("appProtegido"),mensagemLogin=$("mensagemLogin"),mensagemRedefinirSenha=$("mensagemRedefinirSenha"),mensagemApp=$("mensagemApp"),btnEntrar=$("btnEntrar"),btnAdicionar=$("btnAdicionar"),btnTema=$("btnTema"),statusNotificacao=$("statusNotificacao"),lembreteTopo=$("lembreteTopo"),nomesHoje=$("nomesHoje"),filtroAdmin=$("filtroAdmin"),filtroResponsavel=$("filtroResponsavel"),cabecalhoResponsavel=$("cabecalhoResponsavel");
-let db=null,user=null,perfil=null,perfis=[],timers=new Map();
-function msg(el,text,tipo="danger"){el.textContent=text;el.className=el===mensagemApp?`alert alert-${tipo} alert-app`:`small mt-3 text-${tipo}`;el.hidden=false}function clearAppMsg(){mensagemApp.hidden=true;mensagemApp.textContent=""}
-function mostrarTelaLogin(){telaLogin.hidden=false;telaRedefinirSenha.hidden=true;appProtegido.hidden=true}
-function mostrarTelaRedefinirSenha(){telaLogin.hidden=true;telaRedefinirSenha.hidden=false;appProtegido.hidden=true;mensagemRedefinirSenha.hidden=true}
-function hoje(){let d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`}function nomesFmt(a){return a.length<2?(a[0]||""):a.length===2?`${a[0]} e ${a[1]}`:a.slice(0,-1).join(", ")+" e "+a[a.length-1]}
-function clientesTela(){return [...tabelaClientes.querySelectorAll("tr[data-id]")].map(tr=>({id:tr.dataset.id,nome:tr.querySelector('[data-campo="nome"]')?.value.trim()||"",data:tr.querySelector('[data-campo="data"]')?.value||"",status:tr.querySelector('[data-campo="status"]')?.value||"acompanhar",observacao:tr.querySelector('[data-campo="observacao"]')?.value||""}))}function atualizarLembrete(){let a=clientesTela().filter(c=>c.data===hoje()&&c.nome);lembreteTopo.style.display=a.length?"block":"none";nomesHoje.textContent=nomesFmt(a.map(c=>c.nome))}
-function corStatus(s){s.classList.remove("border-success","text-success","border-danger","text-danger","border-orange","text-orange");if(s.value==="acompanhar")s.classList.add("border-success","text-success");if(s.value==="suspender")s.classList.add("border-danger","text-danger");if(s.value==="chamar novamente")s.classList.add("border-orange","text-orange")}
-function agendar(tr,campo){if(!tr.dataset.id||tr.dataset.novo==="1")return;let k=tr.dataset.id+":"+campo;if(timers.has(k))clearTimeout(timers.get(k));timers.set(k,setTimeout(()=>salvarCampo(tr,campo),500))}
-async function salvarCampo(tr,campo){let k=tr.dataset.id+":"+campo;if(timers.has(k)){clearTimeout(timers.get(k));timers.delete(k)}if(!tr.isConnected||!tr.dataset.id)return;let el=tr.querySelector(`[data-campo="${campo}"]`);let col=campo==="data"?"data_retorno":campo;if(!el)return;let val=el.value;if(campo==="nome")val=val.trim();if(campo==="data"&&!val)val=null;let {error}=await db.from("clientes").update({[col]:val}).eq("id",tr.dataset.id);if(error)msg(mensagemApp,"Não foi possível salvar. Confira as políticas RLS da tabela clientes. Detalhe: "+error.message);else{clearAppMsg();atualizarLembrete()}}
-function criarLinha(c){let tr=document.createElement("tr");tr.dataset.id=c.id;function campoInput(col,placeholder,type,value){let td=document.createElement("td"),el=document.createElement("input");el.className="form-control";el.type=type;el.placeholder=placeholder;el.value=value||"";el.dataset.campo=col;td.appendChild(el);return {td,el}}let n=campoInput("nome","Nome do cliente","text",c.nome);n.el.addEventListener("input",()=>{atualizarLembrete();agendar(tr,"nome")});n.el.addEventListener("blur",()=>salvarCampo(tr,"nome"));tr.appendChild(n.td);let d=campoInput("data","","date",c.data_retorno);d.el.addEventListener("change",()=>{atualizarLembrete();salvarCampo(tr,"data")});tr.appendChild(d.td);let ts=document.createElement("td"),s=document.createElement("select");s.className="form-select";s.dataset.campo="status";[["acompanhar","Acompanhar"],["suspender","Suspender"],["chamar novamente","Chamar novamente"]].forEach(([v,t])=>{let o=document.createElement("option");o.value=v;o.textContent=t;s.appendChild(o)});s.value=c.status||"acompanhar";corStatus(s);s.addEventListener("change",()=>{corStatus(s);salvarCampo(tr,"status")});ts.appendChild(s);tr.appendChild(ts);let o=campoInput("observacao","Adicionar observação","text",c.observacao);o.el.addEventListener("input",()=>agendar(tr,"observacao"));o.el.addEventListener("blur",()=>salvarCampo(tr,"observacao"));tr.appendChild(o.td);if(perfil.papel==="admin"){let td=document.createElement("td"),sel=document.createElement("select");sel.className="form-select";sel.setAttribute("aria-label","Responsável pelo cliente");perfis.filter(p=>p.ativo&&p.papel==="colaborador").forEach(p=>{let op=document.createElement("option");op.value=p.id;op.textContent=p.nome||p.email||"Colaborador";sel.appendChild(op)});sel.value=c.responsavel_id||"";sel.addEventListener("change",async()=>{let {error}=await db.from("clientes").update({responsavel_id:sel.value}).eq("id",c.id);if(error)msg(mensagemApp,"Não foi possível alterar responsável. Confira a política RLS. "+error.message);else await carregarClientes()});td.appendChild(sel);tr.appendChild(td)}let ta=document.createElement("td"),del=document.createElement("button");del.className="btn btn-danger btn-sm";del.type="button";del.textContent="Excluir";del.addEventListener("click",async()=>{if(!confirm("Deseja excluir este cliente do banco online?"))return;let {error}=await db.from("clientes").delete().eq("id",c.id);if(error)msg(mensagemApp,"Não foi possível excluir. Confira a política RLS. "+error.message);else{tr.remove();atualizarLembrete();clearAppMsg();if(!tabelaClientes.querySelector("tr[data-id]"))await carregarClientes()}});ta.appendChild(del);tr.appendChild(ta);return tr}
-async function carregarPerfis(){if(perfil.papel!=="admin"){perfis=[perfil];return}let {data,error}=await db.from("perfis").select("id,nome,email,papel,ativo").order("nome");if(error)throw Error("Não foi possível carregar perfis. Confira as políticas RLS de perfis. "+error.message);perfis=data||[];filtroAdmin.style.display="flex";cabecalhoResponsavel.hidden=false;filtroResponsavel.innerHTML="";let all=document.createElement("option");all.value="todos";all.textContent="Todos os colaboradores";filtroResponsavel.appendChild(all);perfis.filter(p=>p.papel==="colaborador"&&p.ativo).forEach(p=>{let op=document.createElement("option");op.value=p.id;op.textContent=p.nome||p.email||"Colaborador";filtroResponsavel.appendChild(op)})}
-async function carregarClientes(){tabelaClientes.innerHTML="";clearAppMsg();let q=db.from("clientes").select("id,nome,data_retorno,status,observacao,responsavel_id,criado_por").order("data_retorno",{ascending:true,nullsFirst:false});if(perfil.papel==="admin"&&filtroResponsavel.value!=="todos")q=q.eq("responsavel_id",filtroResponsavel.value);let {data,error}=await q;if(error){msg(mensagemApp,"Erro ao carregar clientes. Confira as políticas RLS da tabela clientes. Detalhe: "+error.message);return}if(!data?.length){let tr=document.createElement("tr"),td=document.createElement("td");td.colSpan=perfil.papel==="admin"?6:5;td.className="vazio";td.textContent="Nenhum cliente cadastrado ainda. Clique em “+ Adicionar cliente” para começar.";tr.appendChild(td);tabelaClientes.appendChild(tr)}else data.forEach(c=>tabelaClientes.appendChild(criarLinha(c)));atualizarLembrete()}
-async function adicionarCliente(){btnAdicionar.disabled=true;let responsavel=(perfil.papel==="admin"&&filtroResponsavel.value!=="todos")?filtroResponsavel.value:user.id;let {error}=await db.from("clientes").insert({nome:"",data_retorno:null,status:"acompanhar",observacao:"",responsavel_id:responsavel,criado_por:user.id});btnAdicionar.disabled=false;if(error){msg(mensagemApp,"Não foi possível adicionar cliente. Confira as políticas RLS e os campos responsavel_id/criado_por. Detalhe: "+error.message);return}await carregarClientes();tabelaClientes.querySelector('tr[data-id] [data-campo="nome"]')?.focus()}
-async function carregarPerfil(u){user=u;let {data:p,error}=await db.from("perfis").select("id,nome,email,papel,ativo").eq("id",u.id).maybeSingle();if(error)throw Error("Não foi possível consultar seu perfil. Confira a política de leitura da tabela perfis. "+error.message);if(!p)throw Error("Seu usuário entrou no Auth, mas não possui perfil em public.perfis com o mesmo UUID.");if(!p.ativo)throw Error("Seu acesso está desativado. Procure a administradora.");if(!["admin","colaborador"].includes(p.papel))throw Error("Papel inválido na tabela perfis.");perfil=p;telaLogin.hidden=true;telaRedefinirSenha.hidden=true;appProtegido.hidden=false;$("infoUsuario").textContent=(p.nome||p.email||u.email)+" • "+(p.papel==="admin"?"Administradora":"Colaborador");filtroAdmin.style.display="none";cabecalhoResponsavel.hidden=true;await carregarPerfis();await carregarClientes();atualizarStatusNotificacao()}
-async function iniciar(){if(!SUPABASE_URL.startsWith("https://")||!SUPABASE_PUBLISHABLE_KEY.startsWith("sb_publishable_")){msg(mensagemLogin,"Confira a URL do projeto e a chave publicável do Supabase.");btnEntrar.disabled=true;return}if(!window.supabase?.createClient){msg(mensagemLogin,"Não foi possível carregar a biblioteca Supabase. Verifique a conexão com a internet.");return}db=window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY);
- db.auth.onAuthStateChange((ev,s)=>{if(ev==="PASSWORD_RECOVERY"){mostrarTelaRedefinirSenha();return}if(ev==="SIGNED_IN"&&s?.user){if(window.location.hash.includes("type=recovery")){mostrarTelaRedefinirSenha();return}carregarPerfil(s.user).catch(e=>{mostrarTelaLogin();msg(mensagemLogin,e.message)})}if(ev==="SIGNED_OUT"){user=null;perfil=null;perfis=[];mostrarTelaLogin();tabelaClientes.innerHTML=""}});
- let {data,error}=await db.auth.getSession();if(error)msg(mensagemLogin,"Erro ao verificar sessão: "+error.message);if(window.location.hash.includes("type=recovery")){mostrarTelaRedefinirSenha();return}if(data.session?.user){try{await carregarPerfil(data.session.user)}catch(e){mostrarTelaLogin();msg(mensagemLogin,e.message)}}}
-$("formLogin").addEventListener("submit",async e=>{e.preventDefault();if(!db)return;btnEntrar.disabled=true;btnEntrar.textContent="Entrando...";mensagemLogin.hidden=true;let {error}=await db.auth.signInWithPassword({email:$("emailLogin").value.trim(),password:$("senhaLogin").value});btnEntrar.disabled=false;btnEntrar.textContent="Entrar";if(error)msg(mensagemLogin,"Não foi possível entrar. Confira e-mail e senha. "+error.message)});
-$("btnEsqueciSenha").addEventListener("click",async()=>{const email=$("emailLogin").value.trim();if(!email){msg(mensagemLogin,"Digite seu e-mail no campo de login antes de solicitar a redefinição.");$("emailLogin").focus();return}if(!db){msg(mensagemLogin,"O sistema ainda está iniciando. Aguarde alguns segundos e tente novamente.");return}const botao=$("btnEsqueciSenha");botao.disabled=true;mensagemLogin.hidden=true;const {error}=await db.auth.resetPasswordForEmail(email,{redirectTo:"https://luanasilvazr.github.io/Gestao-clientes-wsnet/"});botao.disabled=false;if(error)msg(mensagemLogin,"Erro ao solicitar redefinição: "+error.message);else msg(mensagemLogin,"Se esse e-mail estiver cadastrado, você receberá um link para redefinir a senha. Confira também a pasta de spam.","success")});
-$("formRedefinirSenha").addEventListener("submit",async e=>{e.preventDefault();if(!db){msg(mensagemRedefinirSenha,"Não foi possível conectar ao sistema.");return}const senha=$("novaSenha").value,confirmacao=$("confirmarNovaSenha").value;if(senha.length<8){msg(mensagemRedefinirSenha,"A senha deve ter pelo menos 8 caracteres.");return}if(senha!==confirmacao){msg(mensagemRedefinirSenha,"As senhas não são iguais. Digite novamente.");return}const botao=$("btnSalvarNovaSenha");botao.disabled=true;botao.textContent="Salvando...";const {error}=await db.auth.updateUser({password:senha});botao.disabled=false;botao.textContent="Salvar nova senha";if(error){msg(mensagemRedefinirSenha,"Não foi possível atualizar a senha. Abra novamente o link mais recente recebido por e-mail. Detalhe: "+error.message);return}await db.auth.signOut();mostrarTelaLogin();$("formRedefinirSenha").reset();history.replaceState(null,"",window.location.pathname+window.location.search);msg(mensagemLogin,"Senha alterada com sucesso. Entre com sua nova senha.","success")});
-$("btnVoltarLogin").addEventListener("click",()=>{mostrarTelaLogin();history.replaceState(null,"",window.location.pathname+window.location.search)});
-$("btnSair").addEventListener("click",async()=>{let {error}=await db.auth.signOut();if(error)msg(mensagemApp,"Erro ao sair: "+error.message)});btnAdicionar.addEventListener("click",adicionarCliente);filtroResponsavel.addEventListener("change",carregarClientes);
-function notificacao(){if(!("Notification"in window)||Notification.permission!=="granted")return;let a=clientesTela().filter(c=>c.data===hoje()&&c.nome);if(!a.length)return;let ns=a.map(c=>c.nome),key="notificacao-"+hoje()+"-"+ns.join("|");if(localStorage.getItem(key))return;let n=new Notification("🔔 CHAMAR HOJE CLIENTES",{body:nomesFmt(ns),tag:"clientes-hoje",requireInteraction:true});n.onclick=()=>{window.focus();n.close()};localStorage.setItem(key,"sim")}
-function atualizarStatusNotificacao(){if(!( "Notification"in window)){statusNotificacao.textContent="Notificações não são suportadas neste navegador.";return}let p=Notification.permission;statusNotificacao.textContent=p==="granted"?"Notificações ativadas neste navegador.":p==="denied"?"Notificações bloqueadas nas configurações do navegador.":"Ative as notificações para receber lembretes neste navegador.";if(p==="granted"){$("btnAtivarNotificacao").textContent="🔔 Notificações ativadas";$("btnAtivarNotificacao").classList.add("btn-success")}}
-$("btnAtivarNotificacao").addEventListener("click",async()=>{if(!( "Notification"in window)){atualizarStatusNotificacao();return}await Notification.requestPermission();atualizarStatusNotificacao();notificacao()});function carregarTema(){if(localStorage.getItem("temaGestaoClientes")==="noturno"){document.body.classList.add("modo-noturno");btnTema.textContent="☀️ Modo claro"}}btnTema.addEventListener("click",()=>{let n=document.body.classList.toggle("modo-noturno");localStorage.setItem("temaGestaoClientes",n?"noturno":"claro");btnTema.textContent=n?"☀️ Modo claro":"🌙 Modo noturno"});document.addEventListener("DOMContentLoaded",()=>{carregarTema();iniciar().catch(e=>msg(mensagemLogin,e.message||"Erro ao iniciar."))});setInterval(()=>{if(!appProtegido.hidden){atualizarLembrete();notificacao()}},60000);
-</script></body></html>
+:root {
+  --fundo: #edf3fa;
+  --card: #ffffff;
+  --texto: #23364d;
+  --sec: #657991;
+  --azul: #174a7e;
+  --botao: #2563a6;
+  --claro: #e5eef8;
+  --borda: #d4e0ee;
+  --sombra: rgba(29,59,91,.10);
+}
+
+body.modo-noturno {
+  --fundo: #030d1b;
+  --card: #071a33;
+  --texto: #edf4ff;
+  --sec: #a8bfd9;
+  --azul: #d8e9ff;
+  --botao: #246fbd;
+  --claro: #0b2545;
+  --borda: #1b3b5e;
+  --sombra: rgba(0,0,0,.4);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  padding: 30px 16px;
+  font-family: Poppins, sans-serif;
+  background: var(--fundo);
+  color: var(--texto);
+  min-height: 100vh;
+}
+
+.container-principal {
+  max-width: 1250px;
+  margin: auto;
+  background: var(--card);
+  border: 1px solid var(--borda);
+  border-radius: 14px;
+  box-shadow: 0 8px 25px var(--sombra);
+  overflow: hidden;
+}
+
+.topo {
+  padding: 28px 30px;
+  border-bottom: 1px solid var(--borda);
+  background: linear-gradient(135deg,var(--card),var(--claro));
+}
+
+.topo-conteudo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.titulo-area { flex: 1; text-align: center; }
+
+.titulo {
+  font-size: 32px;
+  color: var(--azul);
+  font-weight: 600;
+  margin: 0;
+}
+
+.subtitulo {
+  font-size: 14px;
+  color: var(--sec);
+  margin: 8px auto 0;
+  max-width: 750px;
+}
+
+.lembrete-topo {
+  display: none;
+  width: 330px;
+  padding: 14px 17px;
+  background: #dcfce7;
+  color: #166534;
+  border: 1px solid #86efac;
+  border-left: 5px solid #22c55e;
+  border-radius: 9px;
+}
+
+.lembrete-titulo { font-size: 13px; font-weight: 700; }
+.lembrete-nomes { font-size: 14px; }
+
+.area-controles {
+  padding: 18px 30px;
+  border-bottom: 1px solid var(--borda);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.acoes-principais,
+.acoes-secundarias {
+  display: flex;
+  gap: 9px;
+  flex-wrap: wrap;
+}
+
+.btn {
+  font-family: Poppins, sans-serif;
+  font-size: 13px;
+  border-radius: 7px;
+  padding: 9px 14px;
+}
+
+.btn-adicionar {
+  background: var(--botao);
+  border-color: var(--botao);
+  color: #fff;
+}
+
+.btn-adicionar:hover,
+.btn-adicionar:focus {
+  background: #2878c8;
+  border-color: #2878c8;
+  color: #fff;
+}
+
+.btn-tema {
+  color: var(--sec);
+  border-color: var(--borda);
+}
+
+.status-notificacao {
+  padding: 0 30px 12px;
+  color: var(--sec);
+  font-size: 12px;
+}
+
+.tabela-area { padding: 5px 20px 25px; }
+
+.table {
+  min-width: 900px;
+  border-collapse: separate;
+  border-spacing: 0 7px;
+  color: var(--texto);
+  --bs-table-color: var(--texto);
+  --bs-table-bg: transparent;
+}
+
+.table th { border: 0; padding: 8px; }
+
+.cabecalho-card {
+  padding: 12px 8px;
+  background: var(--claro);
+  border: 1px solid var(--borda);
+  border-radius: 7px;
+  color: var(--texto);
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.table td {
+  padding: 9px;
+  border-top: 1px solid var(--borda);
+  border-bottom: 1px solid var(--borda);
+  vertical-align: middle;
+  text-align: center;
+  background: var(--card);
+}
+
+.table td:first-child {
+  border-left: 1px solid var(--borda);
+  border-radius: 8px 0 0 8px;
+}
+
+.table td:last-child {
+  border-right: 1px solid var(--borda);
+  border-radius: 0 8px 8px 0;
+}
+
+.form-control,
+.form-select {
+  min-height: 41px;
+  background: var(--card);
+  color: var(--texto);
+  border: 1px solid var(--borda);
+  font-family: Poppins, sans-serif;
+  font-size: 13px;
+}
+
+.form-control:focus,
+.form-select:focus {
+  background: var(--card);
+  color: var(--texto);
+  border-color: #5ca3e6;
+  box-shadow: 0 0 0 .2rem rgba(92,163,230,.2);
+}
+
+.form-control::placeholder { color: var(--sec); opacity: 1; }
+.form-select option { background: var(--card); color: var(--texto); }
+
+.border-success { border-color: #72b98b!important; }
+.text-success { color: #198754!important; }
+.border-danger { border-color: #e58b94!important; }
+.text-danger { color: #dc3545!important; }
+.border-orange { border-color: #e6a05f!important; }
+.text-orange { color: #d97706!important; }
+
+.auth-wrap {
+  max-width: 470px;
+  margin: 30px auto;
+  padding: 0 20px 25px;
+}
+
+.auth-card {
+  padding: 24px;
+  background: var(--card);
+  border: 1px solid var(--borda);
+  border-radius: 12px;
+  box-shadow: 0 6px 20px var(--sombra);
+}
+
+.auth-card h2 { font-size: 22px; color: var(--azul); }
+.auth-card label { font-size: 13px; margin-bottom: 5px; }
+
+.barra-usuario {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 30px;
+  border-bottom: 1px solid var(--borda);
+  font-size: 13px;
+  color: var(--sec);
+}
+
+.admin-filtro {
+  display: none;
+  align-items: center;
+  gap: 8px;
+}
+
+.admin-filtro label { white-space: nowrap; }
+
+.alert-app {
+  margin: 15px 20px 0;
+  font-size: 13px;
+  white-space: pre-wrap;
+}
+
+.vazio { padding: 24px!important; color: var(--sec)!important; }
+
+.marca-dagua {
+  text-align: center;
+  padding: 20px;
+  color: var(--sec);
+  font-size: 12px;
+  opacity: .8;
+}
+
+[hidden] { display: none!important; }
+
+@media(max-width:900px) {
+  body { padding: 12px; }
+  .topo-conteudo { flex-direction: column; }
+  .lembrete-topo { width: 100%; }
+  .area-controles { flex-direction: column; align-items: stretch; }
+  .acoes-principais,.acoes-secundarias { justify-content: center; }
+  .barra-usuario { flex-wrap: wrap; padding: 12px 18px; }
+  .admin-filtro { width: 100%; }
+}
+
+@media(max-width:600px) {
+  .titulo { font-size: 26px; }
+  .acoes-principais,.acoes-secundarias {
+    flex-direction: column;
+    width: 100%;
+  }
+  .acoes-principais .btn,
+  .acoes-secundarias .btn { width: 100%; }
+  .barra-usuario { flex-direction: column; align-items: stretch; }
+}
+</style>
+</head>
+
+<body>
+<div class="container-principal">
+
+<header class="topo">
+  <div class="topo-conteudo">
+    <div id="lembreteTopo" class="lembrete-topo">
+      <div class="lembrete-titulo">🔔 CHAMAR HOJE</div>
+      <div id="nomesHoje" class="lembrete-nomes"></div>
+    </div>
+    <div class="titulo-area">
+      <h1 class="titulo">Gestão de Clientes</h1>
+      <p class="subtitulo">Planilha para acompanhar clientes renegociados, identificar quem precisa de suspensão ou realizar outra tratativa.</p>
+    </div>
+  </div>
+</header>
+
+<section id="telaLogin" class="auth-wrap">
+  <div class="auth-card">
+    <h2 class="text-center mb-2">Acessar o sistema</h2>
+    <p class="text-center mb-4" style="font-size:13px;color:var(--sec)">
+      Entre com o e-mail e a senha cadastrados pela administradora.
+    </p>
+    <form id="formLogin">
+      <div class="mb-3">
+        <label for="emailLogin">E-mail</label>
+        <input id="emailLogin" class="form-control" type="email" autocomplete="username" required placeholder="seu.email@empresa.com">
+      </div>
+      <div class="mb-3">
+        <label for="senhaLogin">Senha</label>
+        <input id="senhaLogin" class="form-control" type="password" autocomplete="current-password" required placeholder="Sua senha">
+      </div>
+      <button id="btnEntrar" class="btn btn-primary btn-adicionar w-100" type="submit">Entrar</button>
+    </form>
+    <div id="mensagemLogin" class="small mt-3" role="status" aria-live="polite"></div>
+    <div class="text-center mt-3">
+      <button id="btnEsqueciSenha" class="btn btn-link" type="button" style="font-size:13px">Esqueci minha senha</button>
+    </div>
+  </div>
+</section>
+
+<section id="telaRedefinirSenha" class="auth-wrap" hidden>
+  <div class="auth-card">
+    <h2 class="text-center mb-2">Criar nova senha</h2>
+    <p class="text-center mb-4" style="font-size:13px;color:var(--sec)">
+      Digite e confirme a nova senha para acessar o sistema.
+    </p>
+    <form id="formRedefinirSenha">
+      <div class="mb-3">
+        <label for="novaSenha">Nova senha</label>
+        <input id="novaSenha" class="form-control" type="password" autocomplete="new-password" minlength="8" required placeholder="Mínimo de 8 caracteres">
+      </div>
+      <div class="mb-3">
+        <label for="confirmarNovaSenha">Confirme a nova senha</label>
+        <input id="confirmarNovaSenha" class="form-control" type="password" autocomplete="new-password" minlength="8" required placeholder="Digite a senha novamente">
+      </div>
+      <button id="btnSalvarNovaSenha" class="btn btn-primary btn-adicionar w-100" type="submit">Salvar nova senha</button>
+    </form>
+    <div id="mensagemRedefinirSenha" class="small mt-3" role="status" aria-live="polite"></div>
+    <div class="text-center mt-3">
+      <button id="btnVoltarLogin" class="btn btn-link" type="button" style="font-size:13px">Voltar para o login</button>
+    </div>
+  </div>
+</section>
+
+<div id="appProtegido" hidden>
+  <div class="barra-usuario">
+    <div id="infoUsuario"></div>
+    <div class="d-flex gap-2 align-items-center flex-wrap">
+      <div id="filtroAdmin" class="admin-filtro">
+        <label for="filtroResponsavel">Filtrar colaborador:</label>
+        <select id="filtroResponsavel" class="form-select form-select-sm">
+          <option value="todos">Todos os colaboradores</option>
+        </select>
+      </div>
+      <button id="btnSair" class="btn btn-outline-secondary btn-sm" type="button">Sair</button>
+    </div>
+  </div>
+
+  <section class="area-controles">
+    <div class="acoes-principais">
+      <button id="btnAdicionar" class="btn btn-primary btn-adicionar" type="button">+ Adicionar cliente</button>
+      <button id="btnAtivarNotificacao" class="btn btn-outline-success" type="button">🔔 Ativar notificações</button>
+    </div>
+    <div class="acoes-secundarias">
+      <button id="btnTema" class="btn btn-outline-secondary btn-tema" type="button">🌙 Modo noturno</button>
+    </div>
+  </section>
+
+  <div id="statusNotificacao" class="status-notificacao"></div>
+  <div id="mensagemApp" class="alert alert-app" hidden role="status" aria-live="polite"></div>
+
+  <section class="tabela-area">
+    <div class="table-responsive">
+      <table class="table align-middle">
+        <thead><tr>
+          <th><div class="cabecalho-card">Código e Cliente</div></th>
+          <th><div class="cabecalho-card">Data</div></th>
+          <th><div class="cabecalho-card">Status</div></th>
+          <th><div class="cabecalho-card">Observações</div></th>
+          <th id="cabecalhoResponsavel" hidden><div class="cabecalho-card">Responsável</div></th>
+          <th><div class="cabecalho-card">Ações</div></th>
+        </tr></thead>
+        <tbody id="tabelaClientes"></tbody>
+      </table>
+    </div>
+  </section>
+</div>
+</div>
+
+<footer class="marca-dagua">© 2026 WSNET — Luana Silva</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+"use strict";
+
+// Configuração do projeto Supabase
+const SUPABASE_URL = "https://owpyuoobfpnutcgnniac.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_d4riCEOAuQV3pstweSCHvw_fFNe_qpj";
+
+const { createClient } = supabase;
+
+const db = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+  auth: {
+    autoRefreshToken: true,
+    persistSession: true,
+    detectSessionInUrl: true
+  }
+});
+
+let user = null;
+let perfil = null;
+let modoRecuperacao = false;
+let mensagemTimer = null;
+
+// Elementos da página
+const telaLogin = document.getElementById("telaLogin");
+const telaRedefinirSenha = document.getElementById("telaRedefinirSenha");
+const appProtegido = document.getElementById("appProtegido");
+
+const mensagemLogin = document.getElementById("mensagemLogin");
+const mensagemRedefinirSenha = document.getElementById("mensagemRedefinirSenha");
+const mensagemApp = document.getElementById("mensagemApp");
+
+// Exibe mensagens na tela
+function mostrarMensagem(elemento, mensagem, sucesso = false) {
+  if (!elemento) return;
+
+  elemento.textContent = mensagem;
+  elemento.className = sucesso
+    ? "small mt-3 text-success"
+    : "small mt-3 text-danger";
+}
+
+// Controla qual tela está visível
+function mostrarTelaLogin() {
+  modoRecuperacao = false;
+  telaLogin.hidden = false;
+  telaRedefinirSenha.hidden = true;
+  appProtegido.hidden = true;
+}
+
+function mostrarTelaRedefinirSenha() {
+  modoRecuperacao = true;
+  telaLogin.hidden = true;
+  telaRedefinirSenha.hidden = false;
+  appProtegido.hidden = true;
+}
+
+function mostrarApp() {
+  telaLogin.hidden = true;
+  telaRedefinirSenha.hidden = true;
+  appProtegido.hidden = false;
+}
+
+// Limpa os parâmetros sensíveis da URL após o processamento
+function limparParametrosUrl() {
+  window.history.replaceState(
+    {},
+    document.title,
+    window.location.pathname
+  );
+}
+
+// Detecta links de recuperação recebidos por e-mail
+function urlTemRecuperacao() {
+  const hash = new URLSearchParams(
+    window.location.hash.replace(/^#/, "")
+  );
+
+  const query = new URLSearchParams(window.location.search);
+
+  return (
+    hash.get("type") === "recovery" ||
+    query.get("type") === "recovery"
+  );
+}
+
+// Mostra mensagens de erro enviadas pelo Supabase na URL
+function verificarErroUrl() {
+  const query = new URLSearchParams(window.location.search);
+  const hash = new URLSearchParams(
+    window.location.hash.replace(/^#/, "")
+  );
+
+  const descricao =
+    query.get("error_description") ||
+    hash.get("error_description");
+
+  if (descricao) {
+    mostrarTelaLogin();
+    mostrarMensagem(
+      mensagemLogin,
+      "O link de recuperação não pôde ser validado. Solicite um novo link. Detalhes: " +
+        descricao.replace(/\+/g, " ")
+    );
+    return true;
+  }
+
+  return false;
+}
+
+// Login
+document.getElementById("formLogin").addEventListener("submit", async (event) => {
+  event.preventDefault();
+
+  const botao = document.getElementById("btnEntrar");
+  const email = document.getElementById("emailLogin").value.trim();
+  const senha = document.getElementById("senhaLogin").value;
+
+  botao.disabled = true;
+  botao.textContent = "Entrando...";
+  mostrarMensagem(mensagemLogin, "");
+
+  try {
+    const { data, error } = await db.auth.signInWithPassword({
+      email,
+      password: senha
+    });
+
+    if (error) throw error;
+
+    user = data.user;
+    await carregarPerfil();
+  } catch (error) {
+    mostrarMensagem(
+      mensagemLogin,
+      "Não foi possível entrar. Confira seu e-mail e senha. " +
+        (error.message || "")
+    );
+  } finally {
+    botao.disabled = false;
+    botao.textContent = "Entrar";
+  }
+});
+
+// Solicitação de redefinição de senha
+document.getElementById("btnEsqueciSenha").addEventListener("click", async () => {
+  const email = document.getElementById("emailLogin").value.trim();
+
+  if (!email) {
+    mostrarMensagem(
+      mensagemLogin,
+      "Digite seu e-mail no campo acima antes de solicitar a redefinição."
+    );
+    document.getElementById("emailLogin").focus();
+    return;
+  }
+
+  const botao = document.getElementById("btnEsqueciSenha");
+  botao.disabled = true;
+  mostrarMensagem(mensagemLogin, "Enviando solicitação...");
+
+  try {
+    const { error } = await db.auth.resetPasswordForEmail(email, {
+      redirectTo: window.location.origin + window.location.pathname
+    });
+
+    if (error) throw error;
+
+    mostrarMensagem(
+      mensagemLogin,
+      "Se o e-mail estiver cadastrado, você receberá as instruções para criar uma nova senha. Confira também o spam.",
+      true
+    );
+  } catch (error) {
+    mostrarMensagem(
+      mensagemLogin,
+      "Não foi possível solicitar a redefinição: " + error.message
+    );
+  } finally {
+    botao.disabled = false;
+  }
+});
+
+// Processa a nova senha
+document.getElementById("formRedefinirSenha").addEventListener("submit", async (event) => {
+  event.preventDefault();
+
+  const senha = document.getElementById("novaSenha").value;
+  const confirmar = document.getElementById("confirmarNovaSenha").value;
+  const botao = document.getElementById("btnSalvarNovaSenha");
+
+  if (senha.length < 8) {
+    mostrarMensagem(
+      mensagemRedefinirSenha,
+      "A senha precisa ter pelo menos 8 caracteres."
+    );
+    return;
+  }
+
+  if (senha !== confirmar) {
+    mostrarMensagem(
+      mensagemRedefinirSenha,
+      "As senhas não são iguais. Confira os dois campos."
+    );
+    return;
+  }
+
+  botao.disabled = true;
+  botao.textContent = "Salvando...";
+
+  try {
+    const { data: { session }, error: sessionError } =
+      await db.auth.getSession();
+
+    if (sessionError) throw sessionError;
+
+    if (!session) {
+      throw new Error(
+        "Sua sessão de recuperação expirou. Solicite um novo link pelo login."
+      );
+    }
+
+    const { error } = await db.auth.updateUser({
+      password: senha
+    });
+
+    if (error) throw error;
+
+    modoRecuperacao = false;
+
+    await db.auth.signOut();
+    limparParametrosUrl();
+
+    document.getElementById("formRedefinirSenha").reset();
+    mostrarTelaLogin();
+
+    mostrarMensagem(
+      mensagemLogin,
+      "Senha alterada com sucesso! Entre com sua nova senha.",
+      true
+    );
+  } catch (error) {
+    mostrarMensagem(
+      mensagemRedefinirSenha,
+      "Não foi possível alterar a senha: " + error.message
+    );
+  } finally {
+    botao.disabled = false;
+    botao.textContent = "Salvar nova senha";
+  }
+});
+
+// Retorno à tela de login
+document.getElementById("btnVoltarLogin").addEventListener("click", async () => {
+  modoRecuperacao = false;
+
+  try {
+    await db.auth.signOut();
+  } catch (_) {
+    // O retorno à tela de login continua disponível.
+  }
+
+  limparParametrosUrl();
+  mostrarTelaLogin();
+});
+
+// Busca o perfil do usuário autenticado
+async function carregarPerfil() {
+  if (!user || modoRecuperacao) return;
+
+  try {
+    const { data, error } = await db
+      .from("perfis")
+      .select("id, nome, email, papel, ativo")
+      .eq("id", user.id)
+      .maybeSingle();
+
+    if (error) throw error;
+
+    if (!data) {
+      throw new Error(
+        "Seu perfil não foi encontrado na tabela perfis. Peça à administradora para verificar seu cadastro."
+      );
+    }
+
+    if (!data.ativo) {
+      await db.auth.signOut();
+      throw new Error("Este usuário está inativo. Procure a administradora.");
+    }
+
+    perfil = data;
+
+    document.getElementById("infoUsuario").textContent =
+      (perfil.nome || perfil.email || "Usuário") +
+      " — " +
+      (perfil.papel === "admin" ? "Administradora" : "Colaborador");
+
+    mostrarApp();
+  } catch (error) {
+    mostrarTelaLogin();
+    mostrarMensagem(
+      mensagemLogin,
+      "Não foi possível consultar seu perfil. Confira o cadastro e as políticas de acesso da tabela perfis. " +
+        error.message
+    );
+  }
+}
+
+// Sair do sistema
+document.getElementById("btnSair").addEventListener("click", async () => {
+  await db.auth.signOut();
+  user = null;
+  perfil = null;
+  mostrarTelaLogin();
+});
+
+// Alternância de tema
+document.getElementById("btnTema").addEventListener("click", () => {
+  document.body.classList.toggle("modo-noturno");
+
+  const escuro = document.body.classList.contains("modo-noturno");
+
+  document.getElementById("btnTema").textContent = escuro
+    ? "☀️ Modo claro"
+    : "🌙 Modo noturno";
+});
+
+// Notificações do navegador
+document.getElementById("btnAtivarNotificacao").addEventListener("click", async () => {
+  const status = document.getElementById("statusNotificacao");
+
+  if (!("Notification" in window)) {
+    status.textContent = "Este navegador não oferece suporte a notificações.";
+    return;
+  }
+
+  const permissao = await Notification.requestPermission();
+
+  status.textContent = permissao === "granted"
+    ? "Notificações ativadas neste navegador."
+    : "As notificações não foram autorizadas.";
+});
+
+// Inicialização e recuperação de sessão
+async function iniciar() {
+  if (verificarErroUrl()) return;
+
+  if (urlTemRecuperacao()) {
+    mostrarTelaRedefinirSenha();
+  } else {
+    mostrarTelaLogin();
+  }
+
+  db.auth.onAuthStateChange(async (evento, session) => {
+    if (evento === "PASSWORD_RECOVERY") {
+      mostrarTelaRedefinirSenha();
+      return;
+    }
+
+    if (modoRecuperacao) return;
+
+    if (evento === "SIGNED_OUT") {
+      user = null;
+      perfil = null;
+      mostrarTelaLogin();
+      return;
+    }
+
+    if (session?.user) {
+      user = session.user;
+      await carregarPerfil();
+    }
+  });
+
+  const { data, error } = await db.auth.getSession();
+
+  if (error) {
+    mostrarMensagem(
+      mensagemLogin,
+      "Não foi possível verificar a sessão: " + error.message
+    );
+    return;
+  }
+
+  if (modoRecuperacao) {
+    mostrarTelaRedefinirSenha();
+    return;
+  }
+
+  if (data.session?.user) {
+    user = data.session.user;
+    await carregarPerfil();
+  }
+}
+
+iniciar();
+</script>
+
+</body>
+</html>
