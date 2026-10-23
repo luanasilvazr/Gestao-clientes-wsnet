@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WSNET | Dashboard de Gestão</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#d9e7f5;--card:#fff;--text:#243247;--muted:#718096;--blue:#1b426d;--accent:#1d5a96;--pale:#edf5ff;--border:#dce5ef;--green:#168553;--red:#d64045;--orange:#c87916;--shadow:0 8px 28px rgba(25,52,82,.07)}
+body.dark{--bg:#101c30;--card:#1f2937;--text:#e5e7eb;--muted:#a2adbd;--blue:#a8ccf7;--accent:#3475bd;--pale:#26374c;--border:#374151;--shadow:0 8px 28px rgba(0,0,0,.2)}
+body.dark{--text:#f3f6fb;--muted:#b8c3d2}
+body.dark .table,body.dark .table td,body.dark .table th,body.dark .table .client-name,body.dark .table .client-code{color:var(--text)!important}
+body.dark .table td{background-color:var(--card)!important;border-color:var(--border)!important}
+body.dark .table thead th{background-color:var(--pale)!important;color:#d7e3f3!important}
+body.dark .table tbody tr:hover td{background-color:#29384b!important}
+body.dark .form-control,body.dark .form-select,body.dark .form-control:focus,body.dark .form-select:focus{color:#f3f6fb!important;background-color:#182333!important}
+body.dark .form-control::placeholder{color:#aebbd0!important;opacity:1}
+body.dark .form-select option{background:#182333;color:#f3f6fb}
+body.dark .btn-outline-secondary{color:#e5edf7;border-color:#526174}
+body.dark .client-name{text-decoration-color:#16a34a}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:Poppins,sans-serif;font-size:15px;transition:background-color .2s,color .2s}
+.app{max-width:1500px;margin:auto;padding:24px}.topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:22px}.brand-lockup{display:flex;align-items:center;gap:13px}.wsnet-logo{width:58px;height:58px;flex-shrink:0;display:grid;place-items:center;border-radius:15px;background:linear-gradient(145deg,#3479c5,#183d69);color:#fff;font-size:18px;font-weight:800;letter-spacing:-1.2px;box-shadow:0 7px 16px rgba(35,85,138,.22);position:relative;overflow:hidden}.wsnet-logo:before{content:"";position:absolute;width:39px;height:39px;border:2px solid rgba(255,255,255,.28);border-radius:50%;right:-13px;top:-12px}.wsnet-logo span{position:relative}.brand h1{font-family:Poppins,sans-serif;font-size:30px;font-weight:700;color:var(--text);margin:0;line-height:1.2;letter-spacing:-.7px}
+.brand h1{font-family:Poppins,sans-serif;font-size:30px;font-weight:700;color:var(--text);margin:0;line-height:1.2;letter-spacing:-.7px}.brand p{margin:5px 0 0;color:var(--muted)}
+.top-actions{display:flex;gap:9px;flex-wrap:wrap;align-items:center}.search-wrap{position:relative;min-width:min(430px,100%);max-width:520px;flex:1}
+.search-wrap .input-group{border-radius:12px;box-shadow:0 5px 18px rgba(25,52,82,.08)}.search-wrap .input-group-text{background:var(--card);border:1px solid var(--border);border-right:0;color:var(--accent);padding:0 15px;border-radius:12px 0 0 12px}.search-wrap input{padding-left:12px;border-left:0!important;border-radius:0 12px 12px 0!important;min-height:46px}.search-wrap .form-control:focus{box-shadow:none}.search-wrap .input-group:focus-within{box-shadow:0 0 0 3px #3479c51c;border-radius:12px}.search-hint{font-size:10px;color:var(--muted);margin:5px 0 0 4px}
+.notification-wrap{position:relative}.notification-badge{display:inline-grid;place-items:center;min-width:19px;height:19px;padding:0 5px;border-radius:20px;background:#d64045;color:#fff;font-size:10px;font-weight:700;margin-left:4px}
+.notification-panel{position:absolute;right:0;top:calc(100% + 10px);width:min(390px,calc(100vw - 28px));z-index:1000;background:var(--card);color:var(--text);border:1px solid var(--border);border-radius:14px;box-shadow:0 16px 40px rgba(15,30,50,.2);padding:15px}
+.notification-panel-head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding-bottom:12px;border-bottom:1px solid var(--border);margin-bottom:5px}.notification-panel-head strong{font-size:14px}.notification-item{display:flex;gap:10px;padding:12px 2px;border-bottom:1px solid var(--border);align-items:flex-start}.notification-item:last-child{border-bottom:0}.notification-item.read{opacity:.62}.notification-symbol{width:34px;height:34px;flex:0 0 34px;border-radius:10px;display:grid;place-items:center;background:var(--pale);color:var(--accent);font-weight:700}.notification-copy{min-width:0;flex:1}.notification-copy strong{display:block;font-size:12px;margin-bottom:3px}.notification-copy p{font-size:11px;color:var(--muted);margin:0;line-height:1.45}.notification-time{font-size:10px;color:var(--muted);margin-top:5px}.notification-footer{display:flex;gap:7px;flex-wrap:wrap;justify-content:flex-end;padding-top:12px}.notification-footer .btn{font-size:11px;padding:7px 9px}
+body.dark .notification-panel{box-shadow:0 16px 40px rgba(0,0,0,.45)}
+.btn,.form-control,.form-select{font-family:inherit;border-radius:9px;font-size:14px}.btn{padding:10px 14px;font-weight:500}.btn-primary{background:var(--accent);border-color:var(--accent)}.btn-outline-secondary{border-color:var(--border);color:var(--text)}
+.form-control,.form-select{background:var(--card);color:var(--text);border-color:var(--border);min-height:42px}.form-control:focus,.form-select:focus{background:var(--card);color:var(--text);border-color:var(--accent);box-shadow:0 0 0 3px #3479c51c}
+.layout{display:grid;grid-template-columns:minmax(0,1fr) 315px;gap:20px;align-items:start}.main-col,.side-col{min-width:0}.panel{background:var(--card);border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow);padding:20px;margin-bottom:20px}
+.panel-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:17px;flex-wrap:wrap}.panel-head h2{font-size:16px;font-weight:650;margin:0}.eyebrow{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+.stats{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:13px;margin-bottom:20px}.stat{background:var(--card);border:1px solid var(--border);border-radius:15px;padding:17px;box-shadow:var(--shadow)}.stat-top{display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:12px;gap:6px}.stat-icon{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;background:var(--pale);font-size:17px}.stat strong{display:block;font-size:27px;margin-top:9px;font-weight:700}.stat small{color:var(--muted);font-size:11px}.stat.stat-alert{border-top:3px solid #c87916}.stat.stat-today{border-top:3px solid #3479c5}.date-value.date-overdue{background:#fee2e2;border-color:#fecaca;color:#991b1b}.date-value.date-today{background:#dbeafe;border-color:#bfdbfe;color:#1d4ed8}body.dark .date-value.date-overdue{background:#4b252a;border-color:#85404a;color:#fecaca}body.dark .date-value.date-today{background:#1d3555;border-color:#315a8b;color:#bfdbfe}.table-toolbar-note{font-size:11px;color:var(--muted);margin-left:auto}.table thead th:first-child{border-radius:9px 0 0 0}.table thead th:last-child{border-radius:0 9px 0 0}.table tbody tr{transition:background-color .15s}.table tbody tr:hover td{background:var(--pale)}.table td:last-child{min-width:150px}
+.filters{display:flex;gap:9px;flex-wrap:wrap}.filters>*{flex:1;min-width:130px}.table-responsive{border-radius:10px}.table{color:var(--text);margin:0;min-width:1000px;vertical-align:middle}.table thead th{background:var(--pale);color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.05em;border:0;padding:13px 10px;white-space:nowrap}.table td{background:var(--card);border-color:var(--border);padding:14px 12px}.client-table th:nth-child(1),.client-table td:nth-child(1){min-width:150px}.client-table th:nth-child(2),.client-table td:nth-child(2){min-width:155px;white-space:nowrap}.client-table td:nth-child(3){min-width:145px}.client-table td:nth-child(4){min-width:155px;white-space:nowrap}.client-table .client-name{display:block;white-space:nowrap;font-size:13px;font-weight:700}.client-table .client-code{display:none}.client-table .date-value{background:#ffedd5;border-color:#fed7aa;color:#9a3412;font-weight:700;padding:7px 10px}body.dark .client-table .date-value{background:#633b20;border-color:#8b572c;color:#fed7aa}.client-table .date-value.date-overdue{background:#fee2e2;border-color:#fecaca;color:#991b1b}body.dark .client-table .date-value.date-overdue{background:#4b252a;border-color:#85404a;color:#fecaca}.client-table td:nth-child(7){min-width:130px;max-width:200px;overflow-wrap:anywhere}.client-table td:last-child{min-width:155px}.table tbody tr:hover td{background:var(--pale)}.client-name{font-weight:600}.client-code{font-size:12px;color:var(--muted);display:block;margin-top:3px}.pill{display:inline-flex;align-items:center;gap:5px;border-radius:20px;padding:5px 9px;font-size:11px;font-weight:600;white-space:nowrap}.pill-green{background:#dcfce7;color:#166534}.pill-red{background:#fee2e2;color:#991b1b}.pill-orange{background:#ffedd5;color:#9a3412}.pill-gray{background:#e5e7eb;color:#374151}.pill-blue{background:#dbeafe;color:#1d4ed8}.status-label{text-transform:uppercase;letter-spacing:.035em;font-weight:800}.paid-row td{opacity:.82}.paid-row .client-name{text-decoration:line-through;text-decoration-color:#16a34a}
+.btn-icon{padding:6px 9px;border:1px solid var(--border);background:transparent;color:var(--text);border-radius:8px}.btn-pay{color:#15803d;border-color:#86c99d;background:#f0fdf4}.btn-unpay{color:#9a3412;border-color:#fdba74;background:#fff7ed}.table-note{color:var(--muted);font-size:11px;margin-top:12px}.date-value{display:inline-flex;align-items:center;white-space:nowrap;background:var(--pale);border:1px solid var(--border);border-radius:7px;padding:5px 8px;font-size:13px;font-weight:600;font-variant-numeric:tabular-nums;color:var(--text)}
+.timeline-compose{border:1px solid var(--border);border-radius:12px;padding:13px;margin-bottom:17px}.mood-options{display:flex;gap:7px;flex-wrap:wrap;margin:9px 0}.mood-btn{border:1px solid var(--border);border-radius:20px;padding:6px 10px;background:var(--card);color:var(--text);font-size:12px}.mood-btn.active{border-color:var(--accent);background:var(--pale)}.timeline-compose textarea{min-height:74px;resize:vertical}.post{display:flex;gap:10px;padding:14px 0;border-bottom:1px solid var(--border)}.post:last-child{border-bottom:0;padding-bottom:0}.avatar{width:37px;height:37px;flex-shrink:0;border-radius:50%;background:var(--pale);display:grid;place-items:center;font-weight:700;color:var(--blue)}.post-body{min-width:0;flex:1}.post-head{display:flex;gap:6px;align-items:center;flex-wrap:wrap}.post-head strong{font-size:12px}.post-time{color:var(--muted);font-size:10px}.post p{margin:6px 0 0;white-space:pre-wrap;overflow-wrap:anywhere}.post-actions{display:flex;gap:8px;align-items:center;margin-top:10px}.like-btn{border:1px solid var(--border);background:var(--card);color:var(--muted);border-radius:18px;padding:5px 10px;font-size:11px;display:inline-flex;align-items:center;gap:6px}.like-btn:hover,.like-btn.liked{color:var(--accent);border-color:var(--accent);background:var(--pale)}.post-caption{font-size:11px;color:var(--muted)}.empty{color:var(--muted);text-align:center;padding:22px 10px;font-size:12px}.summary-row{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid var(--border)}.summary-row:last-child{border:0}.summary-row span{color:var(--muted)}.bar{height:7px;border-radius:8px;background:var(--pale);overflow:hidden;margin-top:6px}.bar span{display:block;height:100%;background:var(--accent);border-radius:8px}
+footer{text-align:center;color:var(--muted);font-size:11px;padding:12px}.notice{font-size:11px;color:var(--muted);margin-top:9px}.hidden{display:none!important}
+/* Cadastro de cliente: modal mais limpo, com hierarquia visual e campos organizados */
+#clientDialog{width:min(700px,calc(100% - 24px))!important;max-height:calc(100vh - 36px);overflow:auto;overscroll-behavior:contain}
+#clientDialog::backdrop{background:rgba(12,25,43,.58);backdrop-filter:blur(3px)}
+#clientDialog #clientForm{padding:0!important}
+.client-form-header{display:flex;align-items:center;gap:13px;padding:22px 25px 18px;border-bottom:1px solid var(--border);background:linear-gradient(135deg,var(--pale),var(--card))}
+.client-form-icon{width:45px;height:45px;flex:0 0 45px;display:grid;place-items:center;border-radius:13px;background:var(--accent);color:#fff;font-size:22px;box-shadow:0 6px 14px rgba(23,74,130,.2)}
+.client-form-heading{min-width:0;flex:1}.client-form-heading .eyebrow{margin-bottom:4px}.client-form-heading h2{font-size:20px;font-weight:700;letter-spacing:-.4px;margin:0}.client-form-heading p{font-size:12px;color:var(--muted);margin:4px 0 0}
+.client-form-body{padding:22px 25px 24px}.form-section-title{display:flex;align-items:center;gap:8px;font-size:12px;text-transform:uppercase;letter-spacing:.06em;font-weight:700;color:var(--accent);margin:0 0 12px}.form-section-title:after{content:"";height:1px;background:var(--border);flex:1}
+#clientDialog .form-label{font-size:12px;font-weight:600;margin-bottom:6px;color:var(--text)}#clientDialog .form-control,#clientDialog .form-select{min-height:44px;border-radius:10px;padding:10px 12px}#clientDialog textarea.form-control{min-height:94px;resize:vertical}
+#clientDialog .form-control::placeholder{color:#9aa8b8;font-size:12px}#clientDialog .client-form-actions{display:flex;align-items:center;justify-content:space-between;gap:10px;padding-top:18px;margin-top:20px;border-top:1px solid var(--border)}#clientDialog .client-form-actions .btn{min-width:110px}
+@media(max-width:520px){.client-form-header{padding:17px}.client-form-body{padding:17px}.client-form-heading h2{font-size:18px}#clientDialog .client-form-actions{flex-direction:column-reverse;align-items:stretch}#clientDialog .client-form-actions .btn{width:100%}}
+
+@media(max-width:1100px){.stats{grid-template-columns:repeat(3,minmax(0,1fr))}.layout{grid-template-columns:1fr}.side-col{display:grid;grid-template-columns:1fr 1fr;gap:18px}.side-col .panel{margin-bottom:0}}
+@media(max-width:650px){.app{padding:13px}.topbar{align-items:flex-start}.brand h1{font-size:25px}.search-wrap{min-width:100%;width:100%}.top-actions{width:100%}.top-actions>.btn{flex:1}.stats{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.stat{padding:13px}.stat strong{font-size:23px}.panel{padding:14px}.side-col{display:block}.side-col .panel{margin-bottom:16px}}
+
+/* Refinamento visual WSNET: bordas e paleta azul consistente */
+:root{--accent:#174a82;--border:#b9c9da}
+body.dark{--accent:#235a9b;--border:#536982;--pale:#25364b}
+.btn-primary{background-color:var(--accent)!important;border:1px solid var(--accent)!important;color:#fff!important}
+.btn-primary:hover,.btn-primary:focus-visible{background-color:#103862!important;border-color:#103862!important;color:#fff!important}
+body.dark .btn-primary:hover,body.dark .btn-primary:focus-visible{background-color:#1a477c!important;border-color:#7297c3!important}
+.btn-outline-secondary{border:1px solid var(--border)!important}
+/* Botões do cabeçalho: azul escuro para tema e verde para notificações */
+#themeBtn{background:#174a82!important;border:1px solid #174a82!important;color:#fff!important;font-weight:600;white-space:nowrap}
+#themeBtn:hover,#themeBtn:focus-visible{background:#103862!important;border-color:#103862!important;color:#fff!important}
+body.dark #themeBtn{background:#245a9a!important;border-color:#769ac7!important;color:#fff!important}
+/* Mantém o botão com a mesma largura nos dois temas para impedir que o cabeçalho se reorganize. */
+#themeBtn{width:168px!important;min-width:168px!important;flex:0 0 168px!important;display:inline-flex!important;align-items:center;justify-content:center;box-sizing:border-box}
+#notifyBtn{background:#b9f2d0!important;border:1px solid #8eddb0!important;color:#14532d!important;font-weight:600;white-space:nowrap}
+#notifyBtn:hover,#notifyBtn:focus-visible{background:#a4e9bf!important;border-color:#73cf98!important;color:#104426!important}
+body.dark #notifyBtn{background:#b9f2d0!important;border-color:#8eddb0!important;color:#14532d!important}
+/* Campo de pesquisa: uma única borda envolvendo ícone e input */
+.search-wrap .input-group{border:1px solid var(--border)!important;border-radius:12px!important;overflow:hidden;background:var(--card);transition:border-color .15s,box-shadow .15s}
+.search-wrap .input-group-text{border:0!important;border-radius:0!important;background:transparent!important}
+.search-wrap .form-control,.search-wrap .form-control:focus{border:0!important;border-radius:0!important;box-shadow:none!important;background:transparent!important;color:var(--text)!important;min-width:0}
+.search-wrap .input-group:focus-within{border-color:var(--accent)!important;box-shadow:0 0 0 3px rgba(35,90,155,.20)!important}
+body.dark .search-wrap .input-group{border-color:#7186a1!important;background:#182333!important}
+body.dark .search-wrap .input-group:focus-within{border-color:#8cb9ec!important}
+body.dark .search-wrap .form-control,body.dark .search-wrap .form-control:focus{background:transparent!important}
+/* Tema escuro: somente cores; dimensões, espaçamentos, bordas e grade permanecem idênticos. */
+body.dark .panel,body.dark .stat,body.dark .timeline-compose,body.dark .notification-panel,body.dark .date-value,body.dark .mood-btn,body.dark .like-btn{border-color:var(--border)}
+body.dark .form-control,body.dark .form-select,body.dark .btn-outline-secondary,body.dark .btn-icon{border-color:var(--border)}
+body,body *{transition-property:background-color,color,border-color,box-shadow}
+
+
+/* Visão geral e tabela: hierarquia visual mais clara e leitura facilitada */
+.reneg-panel-head{align-items:center;padding:2px 0 17px;border-bottom:1px solid var(--border);margin-bottom:17px}
+.reneg-heading{display:flex;flex-direction:column;align-items:flex-start;gap:5px;min-width:0}
+.reneg-heading .eyebrow{display:inline-flex;align-items:center;gap:7px;color:var(--accent);font-size:10px;font-weight:800;letter-spacing:.14em}
+.reneg-heading .eyebrow:before{content:"";width:22px;height:3px;border-radius:4px;background:#2c7bc4;display:inline-block}
+.reneg-heading h2{font-size:21px!important;letter-spacing:-.45px;line-height:1.35}
+#tableCount{display:inline-flex;align-items:center;margin:3px 0 0;background:var(--pale);border:1px solid var(--border);padding:5px 10px;border-radius:999px;font-size:12px;font-weight:600;color:var(--text)}
+.add-client-cta{padding:12px 17px;border-radius:11px;font-weight:650;box-shadow:0 5px 14px rgba(23,74,130,.17);white-space:nowrap}
+.table-tabs{padding:5px;background:var(--pale);border:1px solid var(--border);border-radius:11px;width:max-content;max-width:100%}
+.table-tabs .btn{border-radius:8px!important;padding:8px 15px;font-weight:600}
+.client-filters{display:grid;grid-template-columns:minmax(180px,1fr) minmax(165px,.8fr) auto;gap:10px;padding:13px;background:var(--pale);border:1px solid var(--border);border-radius:12px}
+.client-filters>*{min-width:0}
+.client-filters .form-select,.client-filters .form-control{min-height:44px;background-color:var(--card);border-radius:9px;font-size:13px}
+.client-filters #clearFilters{min-height:44px;padding:9px 14px;white-space:nowrap;background:var(--card)}
+.client-table-wrap{border:1px solid var(--border);border-radius:13px;overflow:auto;background:var(--card);box-shadow:inset 0 1px 0 rgba(255,255,255,.25)}
+.client-table{min-width:1120px!important;border-collapse:separate;border-spacing:0;margin:0!important}
+.client-table thead th{position:sticky;top:0;z-index:2;background:#e8f1fb!important;color:#35516f!important;font-size:10px;letter-spacing:.065em;padding:15px 13px;border-bottom:1px solid #cbd9e8;vertical-align:middle}
+.client-table tbody td{padding:15px 13px;font-size:13px;line-height:1.5;vertical-align:middle;border-bottom:1px solid var(--border);white-space:normal}
+.client-table tbody tr:last-child td{border-bottom:0}
+.client-table tbody tr:nth-child(even) td{background:#f8fbff}
+.client-table tbody tr:hover td{background:#edf5ff!important}
+.client-table th:nth-child(1){min-width:150px}.client-table th:nth-child(2){min-width:130px}.client-table th:nth-child(3){min-width:130px}.client-table th:nth-child(4){min-width:155px}.client-table th:nth-child(5){min-width:155px}.client-table th:nth-child(6){min-width:125px}.client-table th:nth-child(7){min-width:145px}.client-table th:nth-child(8){min-width:155px}
+.client-table .client-name{display:block;font-size:14px;font-weight:700;color:#203b5a;overflow-wrap:anywhere}
+.client-table .client-code{display:inline-block;margin-top:5px;padding:3px 7px;border-radius:6px;background:#edf3fa;color:#526b86;font-size:10px;font-weight:700;letter-spacing:.025em}
+.client-table .date-value{padding:7px 9px;border-radius:8px;font-size:12px;font-weight:700}
+.client-table .pill{padding:7px 10px;font-size:11px;line-height:1.35;border:1px solid transparent}
+.client-table .pill-green{border-color:#b7e4c7}.client-table .pill-red{border-color:#fecaca}.client-table .pill-orange{border-color:#fed7aa}.client-table .pill-gray{border-color:#d6dbe2}.client-table .pill-blue{border-color:#bfdbfe}
+.client-table td:nth-child(4){font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap;color:var(--text)}
+.client-table td:nth-child(7){max-width:190px;min-width:140px;color:var(--muted);font-size:12px;overflow-wrap:anywhere}
+.client-table td:last-child{min-width:155px}
+.client-table .btn-icon{min-width:34px;min-height:34px;display:inline-flex;align-items:center;justify-content:center;padding:6px 8px;background:var(--card);font-size:12px;font-weight:650;box-shadow:0 1px 2px rgba(20,40,60,.04)}
+.client-table .btn-pay{background:#e9f9ef}.client-table .btn-unpay{background:#fff4e8}
+.table-note{padding:10px 12px;margin:12px 0 0;background:var(--pale);border-radius:9px;border-left:3px solid var(--accent);font-size:11px;line-height:1.6}
+body.dark .client-table thead th{background:#263a52!important;color:#dceaff!important;border-bottom-color:var(--border)}
+body.dark .client-table tbody tr:nth-child(even) td{background:#202e40!important}
+body.dark .client-table tbody tr:hover td{background:#2a3d55!important}
+body.dark .client-table .client-name{color:#f1f6ff!important}
+body.dark .client-table .client-code{background:#2b3b50;color:#c0d0e4!important}
+body.dark .client-table .btn-pay{background:#173b2b;color:#a7f3c0;border-color:#2f7650}
+body.dark .client-table .btn-unpay{background:#49331f;color:#fed7aa;border-color:#8b6036}
+body.dark .client-filters{background:#1c2b3d}
+body.dark .client-filters .form-select,body.dark .client-filters .form-control{background-color:#182333}body.dark .client-filters #clearFilters{background-color:var(--accent)!important}
+
+/* Filtros mais claros e estado Resolvido em verde-claro */
+.table-tabs #paidTab{background:#dcfce7!important;border:1px solid #a7e6bc!important;color:#166534!important;box-shadow:none}
+.table-tabs #paidTab:hover{background:#c9f7d8!important;border-color:#86dca4!important}
+.table-tabs #paidTab.btn-primary{background:#baf0cb!important;border-color:#75d79a!important;color:#14532d!important;box-shadow:0 2px 7px rgba(22,101,52,.12)}
+.table-tabs #pendingTab{min-width:112px}
+.filter-field{display:flex;flex-direction:column;gap:6px;min-width:0}
+.filter-field>span,.filter-action>span{font-size:10px;line-height:1.3;font-weight:800;letter-spacing:.09em;color:var(--muted);padding-left:2px}
+.filter-field .form-select,.filter-field .form-control{width:100%;font-weight:500}
+.filter-action{display:flex;flex-direction:column;gap:6px;justify-content:flex-end}
+.client-filters #clearFilters{background:var(--accent)!important;color:#fff!important;border-color:var(--accent)!important;min-width:140px}
+.client-filters #clearFilters:hover{background:#24558a!important;border-color:#24558a!important}
+body.dark .table-tabs #paidTab{background:#173c2a!important;border-color:#2d7650!important;color:#baf7ce!important}
+body.dark .table-tabs #paidTab.btn-primary{background:#24563b!important;color:#dcfce7!important}
+body.dark .filter-field>span,body.dark .filter-action>span{color:#b8c3d2}
+
+@media(max-width:700px){.reneg-panel-head{align-items:stretch}.reneg-heading h2{font-size:18px!important}.add-client-cta{width:100%}.client-filters{grid-template-columns:1fr}.table-tabs{width:100%}.table-tabs .btn{flex:1}}
+
+</style>
+
+<style>
+/* Tela de autenticação WSNET: manter oculta durante a verificação inicial da sessão para evitar piscar no refresh. */
+#authGate{display:none;min-height:100vh;align-items:center;justify-content:center;padding:24px;background:#071a33;background-image:radial-gradient(ellipse at top,#123b68 0%,#071a33 58%,#041020 100%);color:#f4f8ff}
+#authSuccess{min-height:100vh;display:none;align-items:center;justify-content:center;padding:24px;background:#071a33;background-image:radial-gradient(ellipse at top,#123b68 0%,#071a33 58%,#041020 100%);color:#f4f8ff}
+#authCard,#authSuccessCard{width:min(100%,420px);background:#0b2342;border:1px solid #24466d;border-radius:20px;padding:32px;box-shadow:0 24px 70px rgba(0,0,0,.32);color:#f4f8ff}
+#authCard .auth-logo,#authSuccessCard .auth-logo{width:auto;height:auto;border-radius:0;background:transparent;color:#fff;display:block;font-size:30px;font-weight:900;letter-spacing:2px;margin:0 auto 28px;text-align:center}
+.wsnet-logo-img{display:block;width:190px;max-width:100%;height:auto;object-fit:contain;margin:0 auto}
+#legacyDashboard .wsnet-logo-img{width:100%;height:100%;object-fit:contain;padding:5px}
+#legacyDashboard .wsnet-logo{background:#071a33;border-radius:12px}
+.auth-link{display:block;text-align:center;margin-top:14px;color:#9fcaff;background:none;border:0;padding:4px;width:100%;font-size:13px;text-decoration:underline;cursor:pointer}
+.auth-secondary{background:#14385f!important;border:1px solid #31577f!important;color:#fff!important}
+.auth-view-hidden{display:none!important}
+#resetRequestMessage,#newPasswordMessage{font-size:13px;margin-top:13px;white-space:pre-wrap;color:#d8e6f7}
+#authCard h1{display:none}
+#authSuccessCard h1{font-size:22px;font-weight:750;margin:0 0 18px;text-align:center;color:#fff}
+#authCard>p,#authSuccessCard>p{display:none}
+#authCard .form-label{color:#d8e6f7;font-size:13px;font-weight:600}
+#authCard .form-control{background:#071a33!important;color:#fff!important;border:1px solid #31547d!important;border-radius:10px;min-height:46px}
+#authCard .form-control::placeholder{color:#8fa8c6}
+#authCard .form-control:focus{border-color:#6aa8ef!important;box-shadow:0 0 0 3px rgba(106,168,239,.17)!important}
+#authCard .btn-primary{background:#2368ad!important;border-color:#347fc9!important;color:#fff!important;min-height:46px;font-weight:700}
+#authCard .btn-primary:hover{background:#2d7bc7!important}
+#authMessage{font-size:13px;margin-top:13px;white-space:pre-wrap;color:#ffd5d5}
+#authSuccess{display:none}
+#authSuccessCard{width:min(100%,480px)}
+#authSuccessCard .auth-status{display:inline-block;padding:6px 10px;border-radius:30px;background:#dcfce7;color:#166534;font-size:12px;font-weight:700;margin:8px 0 12px}
+#authWelcome{display:block!important;color:#d8e6f7;text-align:center}
+#authSuccessCard button{display:block;margin:20px auto 0;background:#14385f!important;color:#fff!important;border-color:#31577f!important}
+@media(max-width:480px){#authCard,#authSuccessCard{padding:25px}}
+</style>
+
+<style>
+/* Refinamento visual dos botões: aparência mais moderna sem alterar o layout do painel. */
+.btn{
+  border-radius:10px!important;
+  font-weight:650;
+  letter-spacing:.005em;
+  transition:background-color .18s ease,border-color .18s ease,box-shadow .18s ease,transform .18s ease;
+  box-shadow:0 1px 2px rgba(15,35,60,.06);
+}
+.btn:hover{transform:translateY(-1px);box-shadow:0 4px 10px rgba(15,35,60,.12)}
+.btn:active{transform:translateY(0);box-shadow:0 1px 2px rgba(15,35,60,.08)}
+.btn:focus-visible,.btn-icon:focus-visible,.mood-btn:focus-visible{outline:3px solid rgba(59,130,246,.28);outline-offset:2px}
+.btn-primary{box-shadow:0 2px 5px rgba(23,74,130,.16)}
+.btn-success{background:#dcfce7!important;border:1px solid #86d7a2!important;color:#166534!important;font-weight:700}
+.btn-success:hover,.btn-success:focus-visible{background:#bbf7d0!important;border-color:#4ade80!important;color:#14532d!important}
+.btn-outline-secondary{background:var(--card)!important;color:var(--text)!important;box-shadow:0 1px 2px rgba(15,35,60,.035)}
+.btn-outline-secondary:hover{background:var(--pale)!important;border-color:#9aafc7!important;color:var(--text)!important}
+.btn-icon{transition:background-color .18s ease,border-color .18s ease,transform .18s ease,box-shadow .18s ease}
+.btn-icon:hover{background:var(--pale);border-color:#9aafc7;transform:translateY(-1px)}
+.table-tabs .btn{border-radius:9px!important;padding:8px 15px;font-weight:700;box-shadow:none}
+.table-tabs .btn:hover{box-shadow:0 3px 8px rgba(15,35,60,.08)}
+.mood-btn{border-radius:999px!important;border:1px solid var(--border)!important;background:var(--card)!important;color:var(--text)!important;padding:8px 12px!important;font-weight:600;transition:all .18s ease}
+.mood-btn:hover{border-color:#8ba8c9!important;background:var(--pale)!important;transform:translateY(-1px)}
+.mood-btn.active{background:#e8f1fc!important;border-color:#8db6e8!important;color:#174a82!important;box-shadow:0 2px 6px rgba(23,74,130,.10)}
+body.dark .btn-success{background:#173b2b!important;border-color:#2f7650!important;color:#a7f3c0!important}
+body.dark .btn-success:hover{background:#205238!important;border-color:#4ade80!important;color:#dcfce7!important}
+body.dark .btn-outline-secondary:hover{background:#26364a!important;border-color:#6e829c!important}
+body.dark .mood-btn.active{background:#1c3858!important;border-color:#4b79ad!important;color:#dbeafe!important}
+@media(prefers-reduced-motion:reduce){.btn,.btn-icon,.mood-btn{transition:none!important}.btn:hover,.btn-icon:hover,.mood-btn:hover{transform:none!important}}
+
+body.supabase-readonly [data-action="unpay"], body.supabase-readonly #postBtn { pointer-events:none!important; opacity:.45!important; }
+
+/* CORREÇÃO: após o login o JavaScript original define display:block inline.
+   A grade precisa vencer esse estilo inline, mas apenas quando autenticado. */
+#legacyDashboard.app[style*="display: block"],
+#legacyDashboard.app[style*="display:block"]{display:grid!important}
+#legacyDashboard.app[style*="display: none"],
+#legacyDashboard.app[style*="display:none"]{display:none!important}
+/* Mantém navegação e conteúdo acessíveis, sem ocultar seções. */
+.ws-content{min-width:0}
+#legacyDashboard .main-col,#legacyDashboard .side-col{min-width:0}
+
+/* WSNET 2026 — camada exclusivamente visual. Nenhuma consulta, evento ou dado foi modificado. */
+:root{--bg:#f3f5fa;--card:#ffffff;--text:#263653;--muted:#8190a8;--blue:#3c58a5;--accent:#4766c2;--pale:#eef2fb;--border:#e7eaf2;--shadow:0 5px 24px rgba(32,49,94,.045)}
+body{background:var(--bg);font-size:13px}
+#legacyDashboard.app{max-width:none;margin:0;padding:0;min-height:100vh;display:grid;grid-template-columns:222px minmax(0,1fr);align-items:stretch}
+#legacyDashboard.app[style*="display: none"],#legacyDashboard.app[style*="display:none"]{display:none!important}
+.ws-sidebar{background:#3d57a2;color:#fff;min-height:100vh;padding:27px 16px 18px;position:sticky;top:0;height:100vh;display:flex;flex-direction:column;gap:6px;box-shadow:7px 0 20px rgba(27,45,93,.08);z-index:5}
+.ws-side-brand{display:flex;align-items:center;gap:10px;padding:4px 10px 35px;font-weight:800;font-size:19px;letter-spacing:.04em}
+.ws-side-brand-icon{width:38px;height:38px;display:grid;place-items:center;background:#617ce0;border-radius:12px;font-size:23px;color:white}
+.ws-side-brand small{display:block;font-size:8px;letter-spacing:.16em;font-weight:600;opacity:.68;margin-top:2px}
+.ws-side-section{font-size:9px;font-weight:800;letter-spacing:.14em;color:#aabaf0;margin:0 12px 11px}
+.ws-side-link{color:#e6ebff!important;text-decoration:none;display:flex;align-items:center;gap:12px;padding:13px 15px;border-radius:11px;font-size:12px;font-weight:600;transition:background .2s!important}
+.ws-side-link>span{font-size:19px;width:23px;text-align:center;line-height:1}
+.ws-side-link:hover,.ws-side-link.active{background:rgba(255,255,255,.17);color:#fff!important}
+.ws-side-bottom{margin-top:auto;display:flex;align-items:center;gap:10px;padding:18px 7px 4px;border-top:1px solid #ffffff2b}
+.ws-side-avatar{width:35px;height:35px;border-radius:11px;background:#cbd7ff;color:#344c91;font-size:18px;font-weight:800;display:grid;place-items:center}
+.ws-side-bottom strong,.ws-side-bottom small{display:block}.ws-side-bottom strong{font-size:11px}.ws-side-bottom small{font-size:9px;opacity:.75}
+.ws-content{padding:27px clamp(17px,2.7vw,42px) 15px;min-width:0;max-width:1700px;width:100%;margin:0 auto}
+.ws-page-intro{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:21px}
+.ws-page-intro h2{font-size:25px;font-weight:800;letter-spacing:-.7px;margin:6px 0 4px;color:var(--text)}
+.ws-page-intro p{margin:0;color:var(--muted);font-size:12px}.ws-page-eyebrow{font-size:10px;letter-spacing:.14em;font-weight:800;color:#5e7ad1}
+.ws-online{display:inline-flex;align-items:center;gap:8px;padding:9px 13px;background:white;border:1px solid var(--border);border-radius:25px;font-size:11px;font-weight:600;color:#64728b;white-space:nowrap}
+.ws-online span{width:7px;height:7px;background:#40bb8b;border-radius:50%}
+#legacyDashboard .topbar{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:14px 17px;margin-bottom:22px;box-shadow:var(--shadow);gap:13px}
+#legacyDashboard .brand-lockup{gap:10px}#legacyDashboard .wsnet-logo{width:42px;height:42px;border-radius:11px}#legacyDashboard .brand h1{font-size:16px;letter-spacing:-.25px}#legacyDashboard .brand p{font-size:10px;margin-top:3px}
+#legacyDashboard .search-wrap{order:1;min-width:210px;max-width:360px;flex:1}#legacyDashboard .top-actions{order:2;gap:7px}#legacyDashboard .search-hint{display:none}
+#legacyDashboard .top-actions .btn{font-size:11px;padding:9px 11px;min-height:38px}#legacyDashboard #themeBtn{width:auto!important;min-width:126px!important;flex:0 1 auto!important;background:#eef2ff!important;color:#3e59a5!important;border-color:#dfe6fb!important}
+#legacyDashboard .search-wrap .input-group{box-shadow:none;background:#f6f8fc;border-color:#eef0f5!important}#legacyDashboard .search-wrap input{min-height:38px;font-size:11px}
+#legacyDashboard .stats{grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin-bottom:20px}#legacyDashboard .stat{border:1px solid var(--border);border-radius:15px;padding:17px 14px;min-width:0;box-shadow:var(--shadow)}
+#legacyDashboard .stat-top{font-size:10px;font-weight:600;align-items:flex-start}#legacyDashboard .stat-icon{background:#e9eeff;color:#506dcb}#legacyDashboard .stat strong{font-size:clamp(18px,1.7vw,26px);letter-spacing:-.6px;margin-top:14px;overflow-wrap:anywhere}#legacyDashboard .stat small{font-size:9px;line-height:1.5;display:block;margin-top:5px}
+#legacyDashboard .layout{grid-template-columns:minmax(0,1fr) minmax(270px,320px);gap:17px}#legacyDashboard .panel{border:1px solid var(--border);border-radius:16px;padding:19px;box-shadow:var(--shadow);margin-bottom:17px}
+#legacyDashboard .panel-head h2{font-size:15px}#legacyDashboard .eyebrow{color:#7289c8;font-size:9px;font-weight:800}#legacyDashboard .reneg-heading h2{font-size:19px!important}
+#legacyDashboard .client-filters{background:#f8faff;border-color:#edf0f7}#legacyDashboard .client-table thead th{background:#f3f6fc!important;color:#667795!important}#legacyDashboard .client-table tbody tr:nth-child(even) td{background:#fbfcff}
+#legacyDashboard .side-col #ws-mural{border-top:3px solid #6782dc}#legacyDashboard .timeline-compose{background:#f9faff;border:1px solid #e8edf9}#legacyDashboard .mood-btn{font-size:10px!important;padding:7px 9px!important}
+#legacyDashboard .post{font-size:12px}#legacyDashboard .panel-head{margin-bottom:14px}
+#legacyDashboard footer{padding:14px}
+body.dark{--bg:#151d2f;--card:#202b3f;--text:#edf3ff;--muted:#aebbd0;--pale:#2b3952;--border:#35445d;--shadow:0 5px 24px rgba(0,0,0,.12)}
+body.dark .ws-online{background:var(--card);color:var(--text)}body.dark #legacyDashboard .topbar{background:var(--card)}body.dark #legacyDashboard .client-filters,body.dark #legacyDashboard .timeline-compose{background:#26354c;border-color:var(--border)}body.dark #legacyDashboard .search-wrap .input-group{background:#19273c;border-color:var(--border)!important}
+body.dark #legacyDashboard .client-table thead th{background:#293a54!important;color:#c5d4ef!important}
+@media(max-width:1350px){#legacyDashboard .stats{grid-template-columns:repeat(3,minmax(0,1fr))}#legacyDashboard .layout{grid-template-columns:minmax(0,1fr) 290px}}
+@media(max-width:1050px){#legacyDashboard.app{grid-template-columns:72px minmax(0,1fr)}.ws-sidebar{padding:22px 9px}.ws-side-brand{padding:3px 6px 25px;font-size:0}.ws-side-brand-icon{font-size:22px}.ws-side-brand small,.ws-side-section,.ws-side-bottom,.ws-side-link{font-size:0}.ws-side-link{justify-content:center;padding:13px 6px}.ws-side-link>span{font-size:21px}.ws-content{padding:22px 18px}#legacyDashboard .layout{grid-template-columns:1fr}#legacyDashboard .side-col{display:grid;grid-template-columns:1fr 1fr;gap:14px}#legacyDashboard .side-col .panel{margin-bottom:0}#legacyDashboard #ws-mural{grid-row:span 2}}
+@media(max-width:690px){#legacyDashboard.app{grid-template-columns:1fr}.ws-sidebar{height:auto;min-height:0;position:static;flex-direction:row;align-items:center;overflow-x:auto;padding:10px 12px;gap:3px}.ws-side-brand{padding:0 9px 0 0}.ws-side-brand-icon{width:32px;height:32px}.ws-side-link{flex:0 0 auto;padding:10px 11px}.ws-side-link>span{font-size:19px}.ws-content{padding:17px 12px}.ws-page-intro h2{font-size:21px}.ws-online{display:none}#legacyDashboard .topbar{align-items:stretch}#legacyDashboard .brand-lockup{width:100%}#legacyDashboard .search-wrap{order:3;min-width:100%;max-width:none}#legacyDashboard .top-actions{order:2;width:100%}#legacyDashboard .stats{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}#legacyDashboard .stat{padding:13px}#legacyDashboard .side-col{display:block}#legacyDashboard .side-col .panel{margin-bottom:14px}}
+
+/* Marca WSNET na barra lateral, sem modificar lógica ou dados */
+.ws-side-brand{padding:4px 10px 30px;min-height:78px;justify-content:center}
+.ws-side-brand-logo{display:block;width:170px;max-width:100%;height:65px;object-fit:contain;object-position:center;filter:brightness(0) invert(1)}
+@media(max-width:1050px){.ws-side-brand{padding:4px 0 22px;min-height:62px}.ws-side-brand-logo{width:49px;height:48px}}
+@media(max-width:690px){.ws-side-brand{padding:0 9px 0 0;min-height:0}.ws-side-brand-logo{width:64px;height:36px}}
+</style>
+
+<style id="wsnet-typography-refinement">
+/* Ajuste visual solicitado: tipografia um pouco maior e tons mais escuros. */
+:root{--muted:#52657b;}
+body{font-size:16px;}
+.brand p{font-size:14px;color:#52657b;}
+.panel-head h2{font-size:17px;}
+.stat-top{font-size:13px;color:#52657b;}
+.stat small{font-size:12px;color:#52657b;}
+.eyebrow{font-size:12px;color:#52657b;}
+.table thead th{font-size:11px;color:#465c75;}
+.client-table thead th{font-size:11px;color:#304a67!important;}
+.client-table tbody td{font-size:14px;}
+.client-table td:nth-child(7){font-size:13px;color:#52657b;}
+.client-table .client-code{font-size:11px;color:#405a76;}
+.table-note{font-size:12px;color:#40556e;}
+.search-hint,.table-toolbar-note{font-size:12px;color:#52657b;}
+.notification-copy p{font-size:12px;color:#52657b;}
+.notification-time{font-size:11px;color:#52657b;}
+.post-time{font-size:11px;color:#52657b;}
+.filter-field>span,.filter-action>span{font-size:11px;color:#52657b;}
+body.dark{--muted:#b8c5d6;}
+body.dark .brand p,body.dark .stat-top,body.dark .stat small,body.dark .eyebrow,body.dark .table thead th,body.dark .client-table thead th,body.dark .client-table td:nth-child(7),body.dark .table-note,body.dark .search-hint,body.dark .table-toolbar-note,body.dark .notification-copy p,body.dark .notification-time,body.dark .post-time,body.dark .filter-field>span,body.dark .filter-action>span{color:var(--muted)!important;}
+@media(max-width:650px){body{font-size:15px;}.client-table tbody td{font-size:13px;}}
+</style>
+<script id="wsnet-hubsoft-link-config">
+  // Quando tiver o endereço do Hubsoft, substitua a string vazia abaixo pelo link completo.
+  window.WSNET_HUBSOFT_URL = "";
+</script>
+<style id="wsnet-menu-final-adjustments">
+/* Ajustes leves solicitados: fonte um pouco maior e azul do menu mais escuro. */
+.ws-sidebar { background: #304887; }
+.ws-side-link { font-size: 13px; }
+.ws-side-link > span { font-size: 20px; }
+@media (max-width: 1050px) {
+  .ws-side-link { font-size: 0; }
+  .ws-side-link > span { font-size: 22px; }
+}
+@media (max-width: 690px) {
+  .ws-side-link { font-size: 13px; }
+  .ws-side-link > span { font-size: 20px; }
+}
+</style>
+
+</head>
+<body>
+
+<div id="authGate">
+  <section id="authCard" aria-labelledby="authTitle">
+    <div class="auth-logo"><img class="wsnet-logo-img" src="https://wsnetfibra.com.br/wp-content/uploads/elementor/thumbs/Logo_WSNet-1-2-q23vd2ek2xz7jy6dg22pbmaltv8el1716nqyqpkf3q.png" alt="Logo WSNET"></div>
+    <h1 id="authTitle">Acesso à Gestão WSNET</h1>
+    <p>Entre com o e-mail e a senha cadastrados pela administradora.</p>
+    <form id="authForm">
+      <div class="mb-3"><label class="form-label" for="authEmail">E-mail</label><input id="authEmail" class="form-control" type="email" autocomplete="username" required placeholder="seuemail@empresa.com"></div>
+      <div class="mb-3"><label class="form-label" for="authPassword">Senha</label><input id="authPassword" class="form-control" type="password" autocomplete="current-password" required placeholder="Digite sua senha"></div>
+      <button id="authSubmit" class="btn btn-primary w-100" type="submit">Entrar</button>
+      <button id="forgotPasswordBtn" class="auth-link" type="button">Esqueci minha senha</button>
+      <div id="authMessage" role="status" aria-live="polite"></div>
+    </form>
+    <form id="resetRequestForm" class="auth-view-hidden">
+      <h2 style="font-size:18px;color:#fff;margin:0 0 12px">Redefinir minha senha</h2>
+      <p style="display:block!important;color:#d8e6f7;font-size:13px;margin-bottom:16px">Informe seu e-mail para receber um link de redefinição.</p>
+      <div class="mb-3"><label class="form-label" for="resetEmail">E-mail</label><input id="resetEmail" class="form-control" type="email" autocomplete="email" required placeholder="seuemail@empresa.com"></div>
+      <button id="resetRequestSubmit" class="btn btn-primary w-100" type="submit">Enviar link de redefinição</button>
+      <button id="backToLoginBtn" class="auth-link" type="button">Voltar ao login</button>
+      <div id="resetRequestMessage" role="status" aria-live="polite"></div>
+    </form>
+    <form id="newPasswordForm" class="auth-view-hidden">
+      <h2 style="font-size:18px;color:#fff;margin:0 0 12px">Escolher nova senha</h2>
+      <div class="mb-3"><label class="form-label" for="newPassword">Nova senha</label><input id="newPassword" class="form-control" type="password" minlength="8" autocomplete="new-password" required placeholder="Mínimo de 8 caracteres"></div>
+      <div class="mb-3"><label class="form-label" for="confirmNewPassword">Confirmar nova senha</label><input id="confirmNewPassword" class="form-control" type="password" minlength="8" autocomplete="new-password" required placeholder="Digite novamente"></div>
+      <button id="newPasswordSubmit" class="btn btn-primary w-100" type="submit">Salvar nova senha</button>
+      <div id="newPasswordMessage" role="status" aria-live="polite"></div>
+    </form>
+    <p class="mt-4 mb-0" style="font-size:11px">Acesso restrito aos colaboradores cadastrados. O cadastro público está desativado.</p>
+  </section>
+</div>
+<div id="authSuccess">
+  <section id="authSuccessCard">
+    <div class="auth-logo"><img class="wsnet-logo-img" src="https://wsnetfibra.com.br/wp-content/uploads/elementor/thumbs/Logo_WSNet-1-2-q23vd2ek2xz7jy6dg22pbmaltv8el1716nqyqpkf3q.png" alt="Logo WSNET"></div>
+    <h1>Login validado com sucesso</h1>
+    <span class="auth-status">Conectado ao Supabase</span>
+    <p id="authWelcome"></p>
+    <p><strong>Próxima etapa:</strong> conectar clientes, renegociações e pagamentos às tabelas compartilhadas. O painel antigo ainda usa dados locais, então ele foi mantido bloqueado nesta versão de teste para não misturar informações entre colaboradores.</p>
+    <button id="authLogout" class="btn btn-outline-secondary" type="button">Sair da conta</button>
+  </section>
+</div>
+
+<div class="app" id="legacyDashboard" style="display:none">
+  <nav class="ws-sidebar" aria-label="Navegação principal">
+    <div class="ws-side-brand"><img class="ws-side-brand-logo" src="https://wsnetfibra.com.br/wp-content/uploads/elementor/thumbs/Logo_WSNet-1-2-q23vd2ek2xz7jy6dg22pbmaltv8el1716nqyqpkf3q.png" alt="Logo WSNET"></div>
+    <div class="ws-side-section">MENU PRINCIPAL</div>
+    <a class="ws-side-link active" href="#ws-dashboard-top"><span>▦</span> Dashboard</a>
+    <a class="ws-side-link" href="#ws-renegociacoes"><span>▤</span> Renegociações</a>
+    <a class="ws-side-link" href="#ws-analise"><span>◉</span> Pagamentos</a>
+    <a class="ws-side-link ws-hubsoft-link" href="#" onclick="if(!window.WSNET_HUBSOFT_URL){alert('O link do Hubsoft ainda não foi configurado. Depois, informe o endereço para eu inserir.');return false;}window.open(window.WSNET_HUBSOFT_URL,'_blank','noopener,noreferrer');return false;"><span>↗</span> Abrir Hubsoft</a>
+    <a class="ws-side-link" href="#ws-resumo"><span>◫</span> Resumo da equipe</a>
+    <div class="ws-side-bottom"><div class="ws-side-avatar">W</div><div><strong>Equipe WSNET</strong><small>Ambiente de gestão</small></div></div>
+  </nav>
+  <div class="ws-content" id="ws-dashboard-top">
+  <div class="ws-page-intro"><div><span class="ws-page-eyebrow">PAINEL DE CONTROLE / VISÃO GERAL</span><h2>Olá, <span id="wsGreetingName">equipe WSNET</span>! <span aria-hidden="true">👋</span></h2><p>Organize suas renegociações e acompanhe os resultados do dia.</p></div><span class="ws-online"><span></span> Workspace</span></div>
+  <header class="topbar">
+    <div class="brand-lockup"><div class="wsnet-logo" aria-label="Logo WSNET"><img class="wsnet-logo-img" src="https://wsnetfibra.com.br/wp-content/uploads/elementor/thumbs/Logo_WSNet-1-2-q23vd2ek2xz7jy6dg22pbmaltv8el1716nqyqpkf3q.png" alt="Logo WSNET"></div><div class="brand"><h1>Gestão de Clientes</h1><p>Acompanhe renegociações, pagamentos e o pulso da equipe.</p></div></div>
+    <div class="top-actions">
+      <button id="themeBtn" class="btn btn-primary" type="button">🌙 Modo noturno</button>
+      <div class="notification-wrap">
+        <button id="notifyBtn" class="btn btn-success position-relative" type="button" aria-expanded="false" aria-controls="notificationPanel">
+          <span aria-hidden="true">🔔</span> Notificações <span id="notificationBadge" class="notification-badge">0</span>
+        </button>
+        <section id="notificationPanel" class="notification-panel hidden" aria-label="Central de notificações">
+          <div class="notification-panel-head"><div><strong>Central de notificações</strong><div class="post-caption">Avisos da sua carteira de clientes</div></div><button type="button" id="closeNotifications" class="btn-icon" aria-label="Fechar notificações">×</button></div>
+          <div id="notificationList"></div>
+          <div class="notification-footer"><button type="button" id="enablePushBtn" class="btn btn-outline-secondary btn-sm">Ativar avisos do navegador</button><button type="button" id="markNotificationsRead" class="btn btn-primary btn-sm">Marcar como lidas</button></div>
+        </section>
+      </div>
+    </div>
+    <div class="search-wrap">
+      <div class="input-group">
+        <span class="input-group-text" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="10.8" cy="10.8" r="6.8"></circle><path d="m16 16 4.5 4.5"></path></svg></span>
+        <input id="searchInput" class="form-control" placeholder="Buscar cliente, código ou telefone" aria-label="Pesquisar cliente por código, nome ou telefone">
+      </div>
+      <div class="search-hint">Pesquisa instantânea na sua carteira de clientes</div>
+    </div>
+  </header>
+
+  <section class="stats" aria-label="Indicadores do dashboard">
+    <div class="stat"><div class="stat-top"><span>Pagos hoje</span><span class="stat-icon" aria-hidden="true">✓</span></div><strong id="statPaid">0</strong><small>Renegociações confirmadas hoje</small></div>
+    <div class="stat"><div class="stat-top"><span>Valor recebido hoje</span><span class="stat-icon" aria-hidden="true">R$</span></div><strong id="statValue">R$ 0,00</strong><small>Somente pagamentos registrados hoje</small></div>
+    <div class="stat"><div class="stat-top"><span>Em acompanhamento</span><span class="stat-icon" aria-hidden="true">≡</span></div><strong id="statPending">0</strong><small>Clientes ainda não marcados como pagos</small></div>
+    <div class="stat"><div class="stat-top"><span>Pagos no mês</span><span class="stat-icon" aria-hidden="true">↗</span></div><strong id="statMonth">0</strong><small>Registros pagos neste mês</small></div>
+    <div class="stat"><div class="stat-top"><span>Estimativa mensal</span><span class="stat-icon" aria-hidden="true">↗</span></div><strong id="statEstimate">0</strong><small id="statEstimateNote">Projeção baseada nos últimos 7 dias</small></div>
+  </section>
+
+  <div class="layout">
+    <main class="main-col">
+      <section class="panel" id="ws-renegociacoes">
+        <div class="panel-head reneg-panel-head"><div class="reneg-heading"><div class="eyebrow">VISÃO GERAL</div><h2>Renegociações e pagamentos</h2><div class="table-toolbar-note" id="tableCount">0 clientes exibidos</div></div><button id="addBtn" class="btn btn-primary add-client-cta">＋ Adicionar cliente</button></div>
+        <div class="d-flex gap-2 mb-3 flex-wrap table-tabs"><button id="pendingTab" class="btn btn-primary btn-sm" type="button">◷ Pendentes</button><button id="paidTab" class="btn btn-outline-secondary btn-sm" type="button">✓ Resolvido</button></div>
+        <div class="filters mb-3 client-filters">
+          <label class="filter-field"><span>STATUS DO CLIENTE</span><select id="statusFilter" class="form-select" aria-label="Filtrar por status"><option value="">Todos os status</option><option value="acompanhar">Acompanhar</option><option value="suspender">Suspender</option><option value="chamar novamente">Chamar novamente</option><option value="pago">Pago</option></select></label>
+          <label class="filter-field"><span>DATA DE RETORNO</span><input id="dateFilter" class="form-control" type="date" aria-label="Filtrar por data de retorno"></label>
+          <div class="filter-action"><span aria-hidden="true">&nbsp;</span><button id="clearFilters" class="btn btn-primary">↺ Limpar filtros</button></div>
+        </div>
+        <div class="table-responsive client-table-wrap">
+          <table class="table client-table">
+            <thead><tr><th>Código / Cliente</th><th>Telefone</th><th>Data retorno</th><th>Valor renegociado (R$)</th><th>Status</th><th>Pagamento</th><th>Observações</th><th>Ações</th></tr></thead>
+            <tbody id="clientTable"></tbody>
+          </table>
+        </div>
+        <div id="tableEmpty" class="empty hidden">Nenhum cliente encontrado. Adicione um cliente ou ajuste a pesquisa.</div>
+        <p class="table-note">Marcar como pago remove o cliente da lista de pendentes, registra a data de hoje e mantém o registro nas análises e em Resolvido. Use “Desfazer” caso tenha marcado por engano.</p>
+      </section>
+
+      <section class="panel" id="ws-analise">
+        <div class="panel-head"><div><div class="eyebrow">Análise</div><h2>Resumo dos pagamentos</h2></div><span class="pill pill-green">Atualizado automaticamente</span></div>
+        <div class="row g-3">
+          <div class="col-md-6"><div class="summary-row"><span>Pagamentos de hoje</span><strong id="summaryToday">0</strong></div><div class="summary-row"><span>Pagamentos nos últimos 7 dias</span><strong id="summaryWeek">0</strong></div><div class="summary-row"><span>Pagamentos neste mês</span><strong id="summaryMonth">0</strong></div></div>
+          <div class="col-md-6"><div class="d-flex justify-content-between"><span class="text-secondary">Pagos entre os clientes cadastrados</span><strong id="paidPercent">0%</strong></div><div class="bar"><span id="paidBar" style="width:0%"></span></div><p class="notice">O valor recebido é calculado a partir dos valores informados nos registros marcados como pagos.</p></div>
+        </div>
+      </section>
+    </main>
+
+    <aside class="side-col">
+      <section class="panel" id="ws-mural">
+        <div class="panel-head"><div><div class="eyebrow">Mural da equipe</div><h2 id="timelineQuestion">Como você está se sentindo hoje?</h2><div class="post-caption">Compartilhe seu dia com a equipe.</div></div></div>
+        <div class="timeline-compose">
+          <label for="collaboratorName" class="form-label">Seu nome</label>
+          <input id="collaboratorName" class="form-control mb-2" placeholder="Nome do colaborador">
+          <div class="form-label mb-1" id="moodPrompt">Como você está se sentindo hoje?</div>
+          <div class="mood-options" id="moodOptions">
+            <button type="button" class="mood-btn active" data-mood="😊 Bem">😊 Bem</button>
+            <button type="button" class="mood-btn" data-mood="💪 Focado">💪 Focado</button>
+            <button type="button" class="mood-btn" data-mood="😐 Normal">😐 Normal</button>
+            <button type="button" class="mood-btn" data-mood="😓 Cansado">😓 Cansado</button>
+            <button type="button" class="mood-btn" data-mood="🎉 Animado">🎉 Animado</button>
+          </div>
+          <textarea id="moodMessage" class="form-control" maxlength="280" placeholder="Compartilhe uma atualização com a equipe..."></textarea>
+          <div class="d-flex justify-content-between align-items-center mt-2"><small class="text-secondary">Até 280 caracteres</small><button id="postBtn" class="btn btn-primary btn-sm">Publicar</button></div>
+        </div>
+        <div id="timelineFeed"></div>
+        <p class="notice">O mural ainda usa armazenamento local e não é compartilhado entre os colaboradores.</p>
+      </section>
+      <section class="panel" id="ws-resumo">
+        <div class="panel-head"><div><div class="eyebrow">Atalhos</div><h2>Resumo da equipe</h2></div></div>
+        <div class="summary-row"><span>Clientes cadastrados</span><strong id="sideClients">0</strong></div>
+        <div class="summary-row"><span>Renegociações pagas</span><strong id="sidePaid">0</strong></div>
+        <div class="summary-row"><span>Última atualização</span><strong id="lastUpdated">Agora</strong></div>
+        <p class="notice">Clientes, renegociações e pagamentos são compartilhados pelo Supabase. A edição de clientes e renegociações está habilitada; exclusão, estorno e mural continuam protegidos até serem integrados.</p>
+      </section>
+      <section class="panel" id="improvementPanel">
+        <div class="panel-head"><div><div class="eyebrow">Desenvolvimento</div><h2>O que melhorar</h2></div></div>
+        <div id="improvementContent" class="notice" style="font-size:12px;line-height:1.7"></div>
+        <p class="notice">Sugestões automáticas baseadas nos dados registrados neste navegador; use como orientação, não como avaliação definitiva.</p>
+      </section>
+    </aside>
+  </div>
+  <footer>© 2026 WSNET — Luana Silva</footer>
+  </div><!-- /ws-content -->
+</div>
+
+
+<dialog id="clientDialog" style="border:1px solid var(--border);border-radius:18px;background:var(--card);color:var(--text);padding:0;box-shadow:0 24px 70px #0004">
+ <form id="clientForm">
+  <div class="client-form-header">
+   <div class="client-form-icon" aria-hidden="true">＋</div>
+   <div class="client-form-heading"><div class="eyebrow">GESTÃO WSNET · CADASTRO</div><h2 id="clientDialogTitle">Novo cliente</h2><p>Preencha os dados para organizar o próximo contato.</p></div>
+   <button type="button" id="closeClientDialog" class="btn-icon" aria-label="Fechar">✕</button>
+  </div>
+  <div class="client-form-body">
+   <input type="hidden" id="clientId">
+   <div class="form-section-title">Dados do cliente</div>
+   <div class="row g-3">
+    <div class="col-md-8"><label class="form-label" for="formNome">Nome completo <span class="text-danger">*</span></label><input class="form-control" id="formNome" required maxlength="120" placeholder="Ex.: Maria da Silva" autocomplete="name"></div>
+    <div class="col-md-4"><label class="form-label" for="formCodigo">Código do cliente</label><input class="form-control" id="formCodigo" maxlength="40" placeholder="Ex.: WS-12345"></div>
+    <div class="col-md-6"><label class="form-label" for="formTelefone">Telefone / WhatsApp</label><input class="form-control" id="formTelefone" type="tel" inputmode="numeric" autocomplete="tel" maxlength="20" placeholder="(13) 99999-9999"></div>
+    <div class="col-md-6"><label class="form-label" for="formData">Data de retorno</label><input class="form-control" id="formData" type="date"></div>
+   </div>
+   <div class="form-section-title mt-4">Negociação</div>
+   <div class="row g-3">
+    <div class="col-md-6"><label class="form-label" for="formValor">Valor renegociado (R$)</label><input class="form-control" id="formValor" type="number" min="0" step="0.01" placeholder="0,00"></div>
+    <div class="col-md-6"><label class="form-label" for="formStatus">Status do atendimento</label><select class="form-select" id="formStatus"><option value="acompanhar">Acompanhar</option><option value="suspender">Suspender</option><option value="chamar novamente">Chamar novamente</option></select></div>
+    <div class="col-12"><label class="form-label" for="formObs">Observações</label><textarea class="form-control" id="formObs" rows="3" maxlength="500" placeholder="Resumo da conversa, objeções ou próximo passo..."></textarea><div class="form-text">Use este campo para registrar informações importantes do contato.</div></div>
+   </div>
+   <div class="client-form-actions"><span class="form-text">* Campo obrigatório</span><div class="d-flex justify-content-end gap-2"><button type="button" id="cancelClientDialog" class="btn btn-outline-secondary">Cancelar</button><button type="submit" class="btn btn-primary">Salvar cliente</button></div></div>
+  </div>
+ </form>
+</dialog>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const $ = id => document.getElementById(id);
+const CLIENT_KEY = "wsnet_clientes_v3";
+const FEED_KEY = "wsnet_timeline_v1";
+let selectedMood = "😊 Bem";
+let clients = [];
+let posts = [];
+let showPaidHistory = false;
+let likedPosts = {};
+let notificationRead = {};
+try{notificationRead=JSON.parse(localStorage.getItem("wsnet_notification_read_v1")||"{}")}catch{notificationRead={};}
+try{likedPosts=JSON.parse(localStorage.getItem("wsnet_timeline_likes_v1")||"{}")}catch{likedPosts={};}
+
+function todayISO(){const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;}
+function monthPrefix(){return todayISO().slice(0,7);}
+function formatDate(value){if(!value)return "—";const parts=String(value).split("-");return parts.length===3?`${parts[2]}/${parts[1]}/${parts[0]}`:value;}
+function money(v){return Number(v||0).toLocaleString("pt-BR",{style:"currency",currency:"BRL"});}
+function escapeHTML(value){return String(value??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+function makeCode(){return "WS-"+Math.random().toString(36).slice(2,7).toUpperCase();}
+function saveClients(){localStorage.setItem(CLIENT_KEY,JSON.stringify(clients));renderAll();}
+function loadClients(){
+  // Inicia sem importar automaticamente a lista antiga, que podia conter clientes de demonstração.
+  // Os clientes reais já salvos na chave atual wsnet_clientes_v2 são preservados.
+  try{clients=JSON.parse(localStorage.getItem(CLIENT_KEY)||"[]");if(!Array.isArray(clients))clients=[];}catch{clients=[];}
+}
+function loadPosts(){try{posts=JSON.parse(localStorage.getItem(FEED_KEY)||"[]");if(!Array.isArray(posts))posts=[];}catch{posts=[];}}
+function formatPhone(value){
+ let digits=String(value??"").replace(/\D/g,"");
+ // Aceita números colados com código do Brasil (+55) ou zero antes do DDD.
+ if(digits.startsWith("55")&&(digits.length===12||digits.length===13))digits=digits.slice(2);
+ if(digits.startsWith("0")&&(digits.length===11||digits.length===12))digits=digits.slice(1);
+ digits=digits.slice(0,11);
+ if(!digits)return "";
+ if(digits.length<=2)return `(${digits}`;
+ const ddd=digits.slice(0,2), rest=digits.slice(2);
+ if(!rest)return `(${ddd})`;
+ // Fixo: DDD + 8 dígitos -> (13) 3333-4444. Celular: DDD + 9 dígitos -> (13) 99999-9999.
+ const mobile=rest.length>8 || (digits.length===11 && rest.length===9);
+ const split=mobile?5:4;
+ if(rest.length<=split)return `(${ddd}) ${rest}`;
+ return `(${ddd}) ${rest.slice(0,split)}-${rest.slice(split)}`;
+}
+function todayCall(c){return !c.pago&&c.data===todayISO();}
+function statusPill(c){if(c.pago)return '<span class="pill pill-green status-label">PAGO</span>';if(c.status==="suspender")return '<span class="pill pill-red status-label">SUSPENDER</span>';if(c.status==="chamar novamente")return '<span class="pill pill-orange status-label">CHAMAR NOVAMENTE</span>';return '<span class="pill pill-blue status-label">ACOMPANHAR</span>'; }
+function renderTable(){
+ const q=$("searchInput").value.trim().toLocaleLowerCase("pt-BR"), sf=$("statusFilter").value, df=$("dateFilter").value;
+ const filtered=clients.filter(c=>{
+   // Pagos ficam fora da lista principal e só aparecem no histórico.
+   if(showPaidHistory?!c.pago:c.pago)return false;
+   const matches=[c.codigo,c.nome,c.telefone].some(v=>String(v||"").toLocaleLowerCase("pt-BR").includes(q));
+   const statusOk=!sf||(sf==="pago"?c.pago:(!c.pago&&(c.status||"acompanhar")===sf));
+   const dateOk=!df||(showPaidHistory?(c.pago&&c.dataPagamento===df):(!c.pago&&c.data===df));
+   return matches&&statusOk&&dateOk;
+ }).sort((a,b)=>(a.data||"9999").localeCompare(b.data||"9999"));
+ $("clientTable").innerHTML=filtered.map(c=>`<tr>
+ <td><span class="client-name">${escapeHTML(c.nome||"Novo cliente")}</span></td>
+ <td class="phone-cell">${escapeHTML(formatPhone(c.telefone)||"—")}</td>
+ <td><span class="date-value ${!c.pago&&c.data&&c.data<todayISO()?"date-overdue":(!c.pago&&c.data===todayISO()?"date-today":"")}" title="${!c.pago&&c.data&&c.data<todayISO()?"Retorno atrasado":(!c.pago&&c.data===todayISO()?"Retorno previsto para hoje":"Data de retorno")}">${c.data?formatDate(c.data):"—"}</span></td>
+ <td>${money(c.valor)}</td>
+ <td>${statusPill(c)}</td>
+ <td>${c.pago?`<span class="pill pill-green">Em ${escapeHTML(c.dataPagamento||"—")}</span>`:'<span class="pill pill-orange">Pendente</span>'}</td>
+ <td><span title="${escapeHTML(c.observacao||"")}">${escapeHTML(c.observacao||"—")}</span></td>
+ <td><div class="d-flex gap-1 justify-content-center">${c.pago?`<button class="btn-icon btn-unpay" data-action="unpay" data-id="${escapeHTML(c.id)}" title="Desfazer pagamento">↩</button>`:`<button class="btn-icon btn-pay" data-action="pay" data-id="${escapeHTML(c.id)}" title="Marcar como pago">✓ Pago</button>`}<button class="btn-icon" data-action="edit" data-id="${escapeHTML(c.id)}" title="Editar cliente">✎</button><button class="btn-icon" data-action="delete" data-id="${escapeHTML(c.id)}" title="Excluir registro">🗑</button></div></td>
+ </tr>`).join("");
+ $("tableEmpty").classList.toggle("hidden",filtered.length>0);
+ $("tableCount").textContent=`${filtered.length} ${filtered.length===1?"cliente exibido":"clientes exibidos"}`;
+ $("pendingTab").className=showPaidHistory?"btn btn-outline-secondary btn-sm":"btn btn-primary btn-sm";
+ $("paidTab").className=showPaidHistory?"btn btn-primary btn-sm":"btn btn-outline-secondary btn-sm";
+ document.querySelector(".main-col .panel .panel-head h2").textContent=showPaidHistory?"Resolvido":"Renegociações e pagamentos";
+ $("tableEmpty").textContent=showPaidHistory?"Nenhum pagamento no histórico com esses filtros.":"Nenhum cliente pendente encontrado. Adicione um cliente ou ajuste a pesquisa.";
+}
+
+function renderStats(){
+ const today=todayISO(), month=monthPrefix(), weekStart=new Date();weekStart.setDate(weekStart.getDate()-6);weekStart.setHours(0,0,0,0);
+ const paid=clients.filter(c=>c.pago), paidToday=paid.filter(c=>c.dataPagamento===today), paidMonth=paid.filter(c=>(c.dataPagamento||"").startsWith(month)), paidWeek=paid.filter(c=>{if(!c.dataPagamento)return false;const d=new Date(c.dataPagamento+"T00:00:00");return d>=weekStart&&d<=new Date(today+"T23:59:59");});
+ const total=clients.length, pct=total?Math.round(paid.length/total*100):0;
+ const pendingClients=clients.filter(c=>!c.pago);
+ $("statPaid").textContent=paidToday.length;$("statValue").textContent=money(paidToday.reduce((s,c)=>s+Number(c.valor||0),0));$("statPending").textContent=pendingClients.length;$("statMonth").textContent=paidMonth.length;
+ $("summaryToday").textContent=paidToday.length;$("summaryWeek").textContent=paidWeek.length;$("summaryMonth").textContent=paidMonth.length;$("paidPercent").textContent=pct+"%";$("paidBar").style.width=pct+"%";
+ $("sideClients").textContent=total;$("sidePaid").textContent=paid.length;$("lastUpdated").textContent=new Date().toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"});
+ // Projeção mensal simples: média diária de pagamentos nos últimos 7 dias x 30.
+ const receivedWeek=paidWeek.reduce((sum,c)=>sum+Number(c.valor||0),0);
+ const estimate=(receivedWeek/7)*30;$("statEstimate").textContent=money(estimate);
+ $("statEstimateNote").textContent=`Projeção pelo valor recebido nos últimos 7 dias`;
+ const pending=clients.filter(c=>!c.pago), overdue=pending.filter(c=>c.data&&c.data<today), todayCalls=pending.filter(c=>c.data===today), noDate=pending.filter(c=>!c.data), rate=total?Math.round(paid.length/total*100):0;
+ const tips=[];
+ if(overdue.length)tips.push(`<strong>Prioridade:</strong> retomar ${overdue.length} cliente(s) com data de retorno vencida.`);
+ if(todayCalls.length)tips.push(`<strong>Hoje:</strong> entrar em contato com ${todayCalls.length} cliente(s) programado(s) para hoje.`);
+ if(noDate.length)tips.push(`<strong>Organização:</strong> definir data de retorno para ${noDate.length} cliente(s) sem agendamento.`);
+ if(rate<30&&total>=5)tips.push(`<strong>Conversão:</strong> revisar objeções e registrar o motivo quando a renegociação não avançar. A taxa atual cadastrada é ${rate}%.`);
+ if(!tips.length)tips.push("<strong>Bom ritmo:</strong> mantenha as datas de retorno atualizadas, registre os resultados de cada contato e priorize os clientes com maior chance de fechar.");
+ tips.push("<strong>Rotina sugerida:</strong> comece pelos retornos vencidos, faça os contatos do dia e atualize o status logo após cada atendimento.");
+ $("improvementContent").innerHTML=tips.map(t=>`<div style="margin-bottom:9px">• ${t}</div>`).join("");
+}
+function renderTimeline(){
+ const feed=$("timelineFeed");
+ if(!posts.length){feed.innerHTML='<div class="empty">Ainda não há publicações. Seja a primeira pessoa a compartilhar como está o dia!</div>';return;}
+ const currentName=$("collaboratorName").value.trim();
+ feed.innerHTML=posts.slice().sort((a,b)=>b.createdAt-a.createdAt).map(p=>{const likes=Array.isArray(p.likes)?p.likes:[];const liked=!!likedPosts[p.id];return `<article class="post"><div class="avatar">${escapeHTML((p.name||"?").trim().charAt(0).toUpperCase())}</div><div class="post-body"><div class="post-head"><strong>${escapeHTML(p.name)}</strong><span class="pill pill-gray">${escapeHTML(p.mood)}</span><span class="post-time">${new Date(p.createdAt).toLocaleString("pt-BR",{day:"2-digit",month:"short",hour:"2-digit",minute:"2-digit"})}</span></div><p>${escapeHTML(p.message||"Compartilhou como está se sentindo hoje.")}</p><div class="post-actions"><button type="button" class="like-btn ${liked?"liked":""}" data-like-post="${escapeHTML(p.id)}" aria-pressed="${liked}"><span aria-hidden="true">${liked?"♥":"♡"}</span> Curtir <span>${likes.length}</span></button><span class="post-caption">${likes.length===1?"1 curtida":`${likes.length} curtidas`}</span></div></div></article>`;}).join("");
+ updateTimelineQuestion();
+}
+function updateTimelineQuestion(){const name=$("collaboratorName").value.trim();$("timelineQuestion").textContent=name?`Como você está se sentindo hoje, ${name}?`:"Como você está se sentindo hoje?";}
+function buildNotifications(){
+ const today=todayISO(), pending=clients.filter(c=>!c.pago);
+ const items=[];
+ pending.filter(c=>c.data&&c.data<today).forEach(c=>items.push({id:"overdue-"+c.id,type:"overdue",title:"Retorno atrasado",message:`${c.nome||"Cliente"} — retorno previsto para ${formatDate(c.data)}.`,symbol:"!",date:c.data}));
+ pending.filter(c=>c.data===today).forEach(c=>items.push({id:"today-"+c.id,type:"today",title:"Chamar novamente hoje",message:`Chamar novamente hoje — ${c.nome||"Cliente"}.`,symbol:"↗",date:today}));
+ const paidToday=clients.filter(c=>c.pago&&c.dataPagamento===today);
+ paidToday.forEach(c=>items.push({id:"paid-"+c.id,type:"paid",title:"Pagamento registrado",message:`${c.nome||"Cliente"} foi marcado como pago hoje (${money(c.valor)}).`,symbol:"✓",date:today}));
+ posts.slice().sort((a,b)=>b.createdAt-a.createdAt).forEach(p=>{const likes=Array.isArray(p.likes)?p.likes:[];if(likes.length)items.push({id:"post-"+p.id,type:"post",title:"Interação na timeline",message:`A publicação de ${p.name||"um colaborador"} recebeu ${likes.length} curtida(s).`,symbol:"♡",date:new Date(p.createdAt).toLocaleDateString("pt-BR")});});
+ return items.sort((a,b)=>{const order={overdue:0,today:1,paid:2,post:3};return order[a.type]-order[b.type]});
+}
+function renderNotifications(){
+ const items=buildNotifications(), unread=items.filter(n=>!notificationRead[n.id]).length;
+ $("notificationBadge").textContent=unread;$("notificationBadge").classList.toggle("hidden",unread===0);
+ $("notificationList").innerHTML=items.length?items.map(n=>`<article class="notification-item ${notificationRead[n.id]?"read":""}"><div class="notification-symbol">${n.symbol}</div><div class="notification-copy"><strong>${escapeHTML(n.title)}</strong><p>${escapeHTML(n.message)}</p><div class="notification-time">${escapeHTML(n.date||"Hoje")}</div></div></article>`).join(""):'<div class="empty">Tudo em dia! Nenhuma notificação para mostrar.</div>';
+}
+function renderAll(){renderTable();renderStats();renderTimeline();renderNotifications();}
+function openClientDialog(id=null){
+ const c=id?clients.find(x=>x.id===id):null;
+ $("clientDialogTitle").textContent=c?"Editar cliente":"Novo cliente";
+ $("clientId").value=c?.id||"";
+ $("formNome").value=c?.nome||"";$("formCodigo").value=c?.codigo||makeCode();$("formTelefone").value=formatPhone(c?.telefone||"");
+ $("formData").value=c?.data||"";$("formValor").value=c?.valor??"";$("formStatus").value=c?.status||"acompanhar";$("formObs").value=c?.observacao||"";
+ $("clientDialog").showModal();setTimeout(()=>$("formNome").focus(),30);
+}
+$("formTelefone").addEventListener("input",e=>{e.target.value=formatPhone(e.target.value);});
+function addClient(){openClientDialog();}
+function editClient(id){openClientDialog(id);}
+$("clientForm").addEventListener("submit",async e=>{
+ e.preventDefault();
+ const id=$("clientId").value;
+ const rawValue=$("formValor").value;
+ const data={nome:$("formNome").value.trim(),codigo:$("formCodigo").value.trim()||makeCode(),telefone:formatPhone($("formTelefone").value),data:$("formData").value,valor:Math.max(0,Number(rawValue)||0),status:$("formStatus").value,observacao:$("formObs").value.trim()};
+ if(!data.nome){alert("Informe o nome do cliente.");return;}
+ const phoneDigits=data.telefone.replace(/\D/g,"");
+ if(phoneDigits.length&&![10,11].includes(phoneDigits.length)){alert("Informe um telefone com DDD e 10 ou 11 dígitos.");$("formTelefone").focus();return;}
+ if(!currentUserId){alert("Sua sessão expirou. Entre novamente no painel.");showLogin("Entre novamente para continuar.");return;}
+ const submitBtn=$("clientForm").querySelector('button[type="submit"]');
+ submitBtn.disabled=true; submitBtn.textContent="Salvando no Supabase…";
+ try{
+   if(id){
+     const existing=clients.find(x=>x.id===id);
+     if(!existing) throw new Error("Não encontrei esse registro no painel. Atualize a página e tente novamente.");
+     const {data: updatedClient,error: clientError}=await supabaseClient.from("clientes").update({
+       nome:data.nome,codigo:data.codigo,telefone:data.telefone||null,observacoes:data.observacao||null
+     }).eq("id",existing.dbClienteId||id).select("id").maybeSingle();
+     if(clientError) throw new Error("Não foi possível atualizar o cliente. Confira a política UPDATE da tabela clientes. Detalhe: "+clientError.message);
+     if(!updatedClient) throw new Error("O Supabase não confirmou a atualização do cliente. Verifique as permissões RLS da sua conta.");
+     if(existing.dbRenegociacaoId){
+       const {data: updatedReneg,error: renegError}=await supabaseClient.from("renegociacoes").update({
+         valor_renegociado:data.valor,data_retorno:data.data||null,status:data.status,observacoes:data.observacao||null
+       }).eq("id",existing.dbRenegociacaoId).select("id").maybeSingle();
+       if(renegError) throw new Error("O cliente foi atualizado, mas a renegociação não: "+renegError.message);
+       if(!updatedReneg) throw new Error("O cliente foi atualizado, mas o Supabase não confirmou a renegociação. Confira a política UPDATE da tabela renegociacoes.");
+     }else{
+       const {error: renegError}=await supabaseClient.from("renegociacoes").insert({
+         cliente_id:existing.dbClienteId||id,valor_renegociado:data.valor,data_retorno:data.data||null,
+         status:data.status,observacoes:data.observacao||null,criado_por:currentUserId
+       });
+       if(renegError) throw new Error("O cliente foi atualizado, mas não foi possível criar a renegociação: "+renegError.message);
+     }
+     alert("Cliente e renegociação atualizados no Supabase.");
+   }else{
+     const {data: savedClient,error: clientError}=await supabaseClient.from("clientes").insert({
+       nome:data.nome,codigo:data.codigo,telefone:data.telefone||null,
+       responsavel_id:currentUserId,criado_por:currentUserId,observacoes:data.observacao||null
+     }).select("id").single();
+     if(clientError) throw new Error("Não foi possível salvar o cliente: "+clientError.message);
+     const {error: renegError}=await supabaseClient.from("renegociacoes").insert({
+       cliente_id:savedClient.id,valor_renegociado:data.valor,
+       data_retorno:data.data||null,status:data.status,
+       observacoes:data.observacao||null,criado_por:currentUserId
+     });
+     if(renegError){
+       const {error: rollbackError}=await supabaseClient.from("clientes").delete().eq("id",savedClient.id);
+       const extra=rollbackError?" O cliente foi criado, mas não conseguimos desfazer automaticamente o cadastro parcial. Confira a tabela clientes antes de tentar novamente.":" O cadastro parcial foi desfeito.";
+       throw new Error("O cliente foi salvo, mas a renegociação falhou: "+renegError.message+extra);
+     }
+     alert("Cliente e renegociação salvos no Supabase com sucesso.");
+   }
+   $("clientDialog").close();
+   const {data:{user}}=await supabaseClient.auth.getUser();
+   if(user) await showAuthenticated(user);
+ }catch(err){
+   alert(err.message||"Ocorreu um erro ao salvar no Supabase.");
+ }finally{
+   submitBtn.disabled=false; submitBtn.textContent="Salvar cliente";
+ }
+});
+function closeClientDialog(){ $("clientDialog").close(); }
+$("closeClientDialog").addEventListener("click",closeClientDialog);
+$("cancelClientDialog").addEventListener("click",closeClientDialog);
+$("clientDialog").addEventListener("click",e=>{if(e.target===$("clientDialog"))closeClientDialog();});
+
+$("clientTable").addEventListener("click",async e=>{
+ const b=e.target.closest("button[data-action]");if(!b)return;
+ if(b.dataset.action==="filter-today"){showPaidHistory=false;$("statusFilter").value="chamar novamente";$("dateFilter").value="";renderTable();return;}
+ const c=clients.find(x=>x.id===b.dataset.id);if(!c)return;
+ if(b.dataset.action==="pay"){
+   if(c.pago){alert("Este registro já tem um pagamento associado.");return;}
+   if(!c.dbRenegociacaoId){alert("Não encontrei a renegociação deste cliente no Supabase. Atualize o painel e tente novamente.");return;}
+   if(!confirm(`Confirmar o pagamento de ${money(c.valor)} para ${c.nome||"este cliente"} na data de hoje (${new Date().toLocaleDateString("pt-BR")})?`))return;
+   b.disabled=true; const originalText=b.textContent; b.textContent="Salvando…";
+   try{
+     const {error}=await supabaseClient.from("pagamentos").insert({
+       renegociacao_id:c.dbRenegociacaoId,
+       valor_pago:Number(c.valor)||0,
+       data_pagamento:todayISO(),
+       observacoes:"Pagamento registrado pelo painel WSNET",
+       registrado_por:currentUserId
+     });
+     if(error)throw new Error(error.message);
+     alert("Pagamento registrado no Supabase com sucesso.");
+     const {data:{user}}=await supabaseClient.auth.getUser();
+     if(user)await showAuthenticated(user);
+   }catch(err){
+     alert("Não foi possível registrar o pagamento no Supabase. Confira a política RLS da tabela pagamentos. Detalhe: "+(err.message||"erro desconhecido"));
+   }finally{b.disabled=false;b.textContent=originalText;}
+   return;
+ }
+ if(b.dataset.action==="unpay"){alert("O estorno de pagamento será habilitado depois que a exclusão controlada no Supabase for configurada.");return;}
+ if(b.dataset.action==="edit"){editClient(c.id);return;}
+ if(b.dataset.action==="delete"){
+   if(!confirm(`Deseja iniciar a exclusão controlada do registro de ${c.nome||"este cliente"}? O histórico com pagamentos não será excluído.`))return;
+   b.disabled=true;
+   try{
+     if(c.dbRenegociacaoId){
+       const {data: payRows,error: payErr}=await supabaseClient.from("pagamentos").select("id").eq("renegociacao_id",c.dbRenegociacaoId).limit(1);
+       if(payErr)throw new Error("Não foi possível verificar os pagamentos: "+payErr.message);
+       if(payRows && payRows.length){alert("Exclusão bloqueada: esta renegociação possui pagamento vinculado. O histórico foi preservado.");return;}
+       const {error: delRenErr}=await supabaseClient.from("renegociacoes").delete().eq("id",c.dbRenegociacaoId);
+       if(delRenErr)throw new Error("O Supabase não permitiu excluir a renegociação: "+delRenErr.message);
+       alert("Renegociação excluída. O cadastro do cliente foi mantido.");
+     }else{
+       const {data: remaining,error: remErr}=await supabaseClient.from("renegociacoes").select("id").eq("cliente_id",c.dbClienteId).limit(1);
+       if(remErr)throw new Error("Não foi possível verificar o histórico de renegociações: "+remErr.message);
+       if(remaining && remaining.length){alert("Exclusão do cliente bloqueada: ainda existem renegociações vinculadas. Exclua cada renegociação sem pagamentos antes.");return;}
+       const {error: delClientErr}=await supabaseClient.from("clientes").delete().eq("id",c.dbClienteId);
+       if(delClientErr)throw new Error("O Supabase não permitiu excluir o cliente: "+delClientErr.message);
+       alert("Cadastro do cliente excluído com sucesso.");
+     }
+     const {data:{user}}=await supabaseClient.auth.getUser();
+     if(user)await showAuthenticated(user);
+   }catch(err){alert("Não foi possível concluir a exclusão. Nenhum erro foi ignorado. Confira as permissões/RLS e os vínculos no Supabase. Detalhe: "+(err.message||"erro desconhecido"));}
+   finally{b.disabled=false;}
+   return;
+ }
+});
+$("addBtn").addEventListener("click",addClient);
+$("pendingTab").addEventListener("click",()=>{showPaidHistory=false;renderTable();});
+$("paidTab").addEventListener("click",()=>{showPaidHistory=true;renderTable();});
+$("searchInput").addEventListener("input",renderTable);$("statusFilter").addEventListener("change",renderTable);$("dateFilter").addEventListener("change",renderTable);
+$("clearFilters").addEventListener("click",()=>{$("searchInput").value="";$("statusFilter").value="";$("dateFilter").value="";renderTable();});
+$("moodOptions").addEventListener("click",e=>{const b=e.target.closest("[data-mood]");if(!b)return;selectedMood=b.dataset.mood;document.querySelectorAll(".mood-btn").forEach(x=>x.classList.toggle("active",x===b));});
+$("collaboratorName").addEventListener("input",updateTimelineQuestion);
+$("timelineFeed").addEventListener("click",e=>{const b=e.target.closest("[data-like-post]");if(!b)return;const post=posts.find(p=>p.id===b.dataset.likePost);if(!post)return;if(!Array.isArray(post.likes))post.likes=[];if(likedPosts[post.id]){post.likes=post.likes.filter(name=>name!=="local-user");delete likedPosts[post.id];}else{if(!post.likes.includes("local-user"))post.likes.push("local-user");likedPosts[post.id]=true;}localStorage.setItem(FEED_KEY,JSON.stringify(posts));localStorage.setItem("wsnet_timeline_likes_v1",JSON.stringify(likedPosts));renderTimeline();});
+$("postBtn").addEventListener("click",()=>{
+ const name=$("collaboratorName").value.trim(),message=$("moodMessage").value.trim();
+ if(!name){alert("Digite seu nome antes de publicar.");$("collaboratorName").focus();return;}
+ posts.push({id:String(Date.now()),name,mood:selectedMood,message,createdAt:Date.now(),likes:[]});localStorage.setItem(FEED_KEY,JSON.stringify(posts));$("moodMessage").value="";renderTimeline();
+});
+$("themeBtn").addEventListener("click",()=>{document.body.classList.toggle("dark");const dark=document.body.classList.contains("dark");localStorage.setItem("wsnet_theme",dark?"dark":"light");$("themeBtn").textContent=dark?"☀️ Modo claro":"🌙 Modo noturno";});
+if(localStorage.getItem("wsnet_theme")==="dark"){document.body.classList.add("dark");$("themeBtn").textContent="☀️ Modo claro";}
+$("notifyBtn").addEventListener("click",()=>{const panel=$("notificationPanel");panel.classList.toggle("hidden");$("notifyBtn").setAttribute("aria-expanded",String(!panel.classList.contains("hidden")));renderNotifications();});
+$("closeNotifications").addEventListener("click",()=>{$("notificationPanel").classList.add("hidden");$("notifyBtn").setAttribute("aria-expanded","false");});
+$("markNotificationsRead").addEventListener("click",()=>{buildNotifications().forEach(n=>notificationRead[n.id]=true);localStorage.setItem("wsnet_notification_read_v1",JSON.stringify(notificationRead));renderNotifications();});
+$("enablePushBtn").addEventListener("click",async()=>{if(!("Notification"in window)){alert("Este navegador não suporta notificações do sistema.");return;}if(!window.isSecureContext&&location.hostname!=="localhost"){alert("Os avisos do navegador precisam de HTTPS. No GitHub Pages, abra o site pelo endereço HTTPS.");return;}const permission=await Notification.requestPermission();if(permission==="granted"){new Notification("Gestão de Clientes WSNET",{body:"Avisos do navegador ativados. Os alertas de retorno aparecem quando o painel está aberto."});$("enablePushBtn").textContent="Avisos do navegador ativados";}else alert("Permissão não concedida. Você ainda pode consultar os avisos dentro do dashboard.");});
+document.addEventListener("click",e=>{if(!$("notificationPanel").contains(e.target)&&!$("notifyBtn").contains(e.target)){$("notificationPanel").classList.add("hidden");$("notifyBtn").setAttribute("aria-expanded","false");}});
+loadClients();loadPosts();renderAll();
+</script>
+
+<script>
+// Integração da etapa 1: autenticação Supabase. A chave publishable pode ser usada no navegador;
+// nunca coloque aqui a chave secret/service_role.
+const SUPABASE_URL = "https://tjfgcdrfklalnwaloisw.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_2VdPt6RcBAmFJNVnawfW7g_kQuXWcSs";
+const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
+  auth: {
+    persistSession: true,
+    autoRefreshToken: true,
+    detectSessionInUrl: true
+  }
+});
+const authGate = document.getElementById("authGate");
+const authSuccess = document.getElementById("authSuccess");
+const authForm = document.getElementById("authForm");
+const authMessage = document.getElementById("authMessage");
+const authSubmit = document.getElementById("authSubmit");
+function showLogin(message="") {
+  showAuthView("login");
+  authGate.style.display="flex"; authSuccess.style.display="none";
+  document.getElementById("legacyDashboard").style.display="none";
+  authMessage.textContent=message;
+}
+let currentProfile = null;
+let currentUserId = null;
+async function showAuthenticated(user) {
+  const { data: profile, error } = await supabaseClient.from("perfis")
+    .select("nome,email,papel,ativo").eq("id", user.id).maybeSingle();
+  if (error) { await supabaseClient.auth.signOut(); showLogin("Não foi possível consultar seu perfil. Confira as permissões da tabela perfis no Supabase. Detalhe: "+error.message); return; }
+  if (!profile || profile.ativo !== true || !["admin","colaborador"].includes(profile.papel)) {
+    await supabaseClient.auth.signOut();
+    showLogin("Seu usuário não tem um perfil ativo e válido na tabela perfis. Peça à administradora para conferir seu cadastro.");
+    return;
+  }
+  currentProfile = profile;
+  currentUserId = user.id;
+  const greetingName = document.getElementById("wsGreetingName");
+  if (greetingName) greetingName.textContent = (profile.nome || user.email || "colaborador").trim();
+  clients = []; // Nunca mostrar dados antigos do localStorage como se fossem dados compartilhados.
+  authGate.style.display="none"; authSuccess.style.display="none";
+  document.getElementById("legacyDashboard").style.display="block";
+  renderAll();
+  document.getElementById("authWelcome").textContent = `Olá, ${profile.nome || user.email}. Perfil: ${profile.papel === "admin" ? "Administradora" : "Colaborador"}.`;
+  document.querySelector(".brand p").textContent = `${profile.papel === "admin" ? "Administradora" : "Colaborador"} · ${profile.nome || user.email} · Dados consultados no Supabase`;
+  const { data: dbClients, error: clientsError } = await supabaseClient.from("clientes")
+    .select("id,nome,codigo,telefone,responsavel_id,criado_por,observacoes");
+  if (clientsError) { showDataError("clientes", clientsError); return; }
+  const { data: reneg, error: renegError } = await supabaseClient.from("renegociacoes")
+    .select("id,cliente_id,valor_renegociado,data_retorno,status,observacoes,criado_por");
+  if (renegError) { showDataError("renegociacoes", renegError); return; }
+  const { data: pays, error: paysError } = await supabaseClient.from("pagamentos")
+    .select("id,renegociacao_id,valor_pago,data_pagamento,observacoes,registrado_por");
+  if (paysError) { showDataError("pagamentos", paysError); return; }
+  const latestByClient = new Map();
+  (reneg || []).forEach(r => { const old=latestByClient.get(r.cliente_id); if(!old || String(r.data_retorno||"") >= String(old.data_retorno||"")) latestByClient.set(r.cliente_id,r); });
+  clients = (dbClients || []).map(c => {
+    const r=latestByClient.get(c.id);
+    const payment=r ? (pays || []).filter(p=>p.renegociacao_id===r.id).sort((a,b)=>String(b.data_pagamento||"").localeCompare(String(a.data_pagamento||"")))[0] : null;
+    return { id:c.id, nome:c.nome, codigo:c.codigo||"", telefone:c.telefone||"", observacao:(r?.observacoes||c.observacoes||""), data:r?.data_retorno||"", valor:Number(r?.valor_renegociado||0), status:r?.status||"acompanhar", pago:!!payment, dataPagamento:payment?.data_pagamento||"", pagamentoRegistradoEm:payment?.data_pagamento||"", dbClienteId:c.id, dbRenegociacaoId:r?.id||null, dbPagamentoId:payment?.id||null, responsavel_id:c.responsavel_id };
+  });
+  // Etapa 9: edição compartilhada habilitada; estorno continua bloqueado e exclusão tem verificações de segurança.
+  document.body.classList.add("supabase-readonly");
+  $("addBtn").disabled=false; $("addBtn").title="Cadastrar novo cliente no Supabase";
+  document.querySelectorAll('[data-action="unpay"]').forEach(b=>{b.disabled=true;b.title="Estorno bloqueado para proteger o histórico";});
+  document.querySelectorAll('[data-action="delete"]').forEach(b=>{b.disabled=false;b.title="Excluir com confirmação e verificação de pagamentos";});
+  document.querySelectorAll('[data-action="edit"]').forEach(b=>{b.disabled=false;b.title="Editar cliente e renegociação no Supabase";});
+  const postBtn=$("postBtn"); if(postBtn){postBtn.disabled=true;postBtn.title="Mural compartilhado será conectado em uma etapa posterior";}
+  const collaboratorName=$("collaboratorName"); if(collaboratorName)collaboratorName.value=profile.nome||"";
+  renderAll();
+}
+function showDataError(table, err) {
+  const old=document.getElementById("supabaseDataError"); if(old)old.remove();
+  const box=document.createElement("div"); box.id="supabaseDataError"; box.className="alert alert-danger m-3";
+  box.textContent=`O login funcionou, mas não foi possível ler a tabela ${table}. Confira as permissões/RLS. Detalhe: ${err.message}`;
+  document.getElementById("legacyDashboard").prepend(box);
+  clients=[]; renderAll();
+}
+const resetRequestForm=document.getElementById("resetRequestForm");
+const newPasswordForm=document.getElementById("newPasswordForm");
+const resetRequestMessage=document.getElementById("resetRequestMessage");
+const newPasswordMessage=document.getElementById("newPasswordMessage");
+const resetRequestSubmit=document.getElementById("resetRequestSubmit");
+const newPasswordSubmit=document.getElementById("newPasswordSubmit");
+function showAuthView(view){
+  authForm.classList.toggle("auth-view-hidden",view!=="login");
+  resetRequestForm.classList.toggle("auth-view-hidden",view!=="request");
+  newPasswordForm.classList.toggle("auth-view-hidden",view!=="newpassword");
+  document.getElementById("authTitle").textContent=view==="newpassword"?"Escolha uma nova senha":view==="request"?"Redefinir minha senha":"Acesso à Gestão WSNET";
+  authMessage.textContent=""; resetRequestMessage.textContent=""; newPasswordMessage.textContent="";
+}
+document.getElementById("forgotPasswordBtn").addEventListener("click",()=>{
+  document.getElementById("resetEmail").value=document.getElementById("authEmail").value.trim();
+  showAuthView("request");
+});
+document.getElementById("backToLoginBtn").addEventListener("click",()=>showAuthView("login"));
+resetRequestForm.addEventListener("submit",async(event)=>{
+  event.preventDefault(); resetRequestMessage.textContent=""; resetRequestSubmit.disabled=true; resetRequestSubmit.textContent="Enviando…";
+  const email=document.getElementById("resetEmail").value.trim();
+  const redirectTo="https://luanasilvazr.github.io/Gestao-clientes-wsnet/";
+  const {error}=await supabaseClient.auth.resetPasswordForEmail(email,{redirectTo});
+  resetRequestSubmit.disabled=false; resetRequestSubmit.textContent="Enviar link de redefinição";
+  if(error){resetRequestMessage.textContent="Não foi possível enviar o e-mail. Confira as configurações de URL de redirecionamento no Supabase. Detalhe: "+error.message;return;}
+  resetRequestMessage.textContent="Se o e-mail estiver cadastrado, você receberá um link para redefinir a senha. Confira também o spam.";
+});
+newPasswordForm.addEventListener("submit",async(event)=>{
+  event.preventDefault(); newPasswordMessage.textContent="";
+  const password=document.getElementById("newPassword").value;
+  const confirm=document.getElementById("confirmNewPassword").value;
+  if(password.length<8){newPasswordMessage.textContent="Use uma senha com pelo menos 8 caracteres.";return;}
+  if(password!==confirm){newPasswordMessage.textContent="As senhas não são iguais.";return;}
+  newPasswordSubmit.disabled=true; newPasswordSubmit.textContent="Salvando…";
+  const {error}=await supabaseClient.auth.updateUser({password});
+  newPasswordSubmit.disabled=false; newPasswordSubmit.textContent="Salvar nova senha";
+  if(error){newPasswordMessage.textContent="Não foi possível atualizar a senha. Abra novamente o link recebido por e-mail. Detalhe: "+error.message;return;}
+  await supabaseClient.auth.signOut();
+  showAuthView("login"); showLogin("Senha redefinida com sucesso. Entre com sua nova senha.");
+});
+supabaseClient.auth.onAuthStateChange((event,session)=>{
+  if(event==="PASSWORD_RECOVERY"){
+    authGate.style.display="flex"; authSuccess.style.display="none";
+    document.getElementById("legacyDashboard").style.display="none";
+    showAuthView("newpassword");
+  }
+});
+authForm.addEventListener("submit", async (event) => {
+  event.preventDefault(); authMessage.textContent=""; authSubmit.disabled=true; authSubmit.textContent="Entrando…";
+  const email=document.getElementById("authEmail").value.trim();
+  const password=document.getElementById("authPassword").value;
+  const { data, error } = await supabaseClient.auth.signInWithPassword({email,password});
+  authSubmit.disabled=false; authSubmit.textContent="Entrar";
+  if (error) { showLogin("Não foi possível entrar. Confira e-mail e senha. Se for o primeiro acesso, confirme se a conta foi criada e está confirmada no Supabase.\n\nDetalhe: "+error.message); return; }
+  await showAuthenticated(data.user);
+});
+let logoutInProgress = false;
+async function logoutCurrentSession(button) {
+  if (logoutInProgress) return;
+  logoutInProgress = true;
+  if (button) { button.disabled = true; button.textContent = "Saindo…"; }
+  try {
+    const { error } = await supabaseClient.auth.signOut({ scope: "local" });
+    currentProfile = null;
+    currentUserId = null;
+    // Forçar a interface de login depois da confirmação de saída do Supabase.
+    document.getElementById("legacyDashboard").style.display = "none";
+    authSuccess.style.display = "none";
+    showLogin(error ? "A tela de login foi aberta, mas o Supabase informou um erro ao encerrar a sessão: " + error.message : "Você saiu da sua conta.");
+  } catch (error) {
+    showLogin("Não foi possível confirmar a saída da conta. Detalhe: " + (error?.message || error));
+  } finally {
+    logoutInProgress = false;
+    if (button) { button.disabled = false; button.textContent = button.id === "authLogout" ? "Sair da conta" : "Sair"; }
+  }
+}
+document.getElementById("authLogout").addEventListener("click", async (event) => {
+  await logoutCurrentSession(event.currentTarget);
+});
+// Botão de saída dentro do painel autenticado.
+const logoutButton=document.createElement("button"); logoutButton.type="button"; logoutButton.className="btn btn-outline-secondary btn-sm"; logoutButton.textContent="Sair"; logoutButton.style.marginLeft="8px";
+logoutButton.addEventListener("click", async (event) => { await logoutCurrentSession(event.currentTarget); });
+document.querySelector(".top-actions")?.appendChild(logoutButton);
+(async () => {
+  // Se a página foi aberta pelo link de recuperação, manter a tela de nova senha.
+  const hashParams = new URLSearchParams(window.location.hash.replace(/^#/, ""));
+  const queryParams = new URLSearchParams(window.location.search);
+  const isPasswordRecovery = hashParams.get("type") === "recovery" || queryParams.get("type") === "recovery";
+  if (isPasswordRecovery) {
+    authGate.style.display = "flex";
+    authSuccess.style.display = "none";
+    document.getElementById("legacyDashboard").style.display = "none";
+    showAuthView("newpassword");
+    return;
+  }
+
+  // Recuperar a sessão salva pelo Supabase em vez de desconectar a cada abertura/atualização.
+  const { data, error } = await supabaseClient.auth.getSession();
+  if (error) {
+    showLogin("Não foi possível recuperar sua sessão. Entre novamente. Detalhe: " + error.message);
+    return;
+  }
+  if (logoutInProgress) return;
+  if (data.session && data.session.user) {
+    await showAuthenticated(data.session.user);
+  } else {
+    showLogin();
+  }
+})();
+</script>
+
+</body>
+</html>
