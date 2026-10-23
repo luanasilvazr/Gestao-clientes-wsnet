@@ -832,8 +832,16 @@ async function showAuthenticated(user) {
   document.querySelectorAll('[data-action="unpay"]').forEach(b=>{b.disabled=true;b.title="Estorno bloqueado para proteger o histórico";});
   document.querySelectorAll('[data-action="delete"]').forEach(b=>{b.disabled=false;b.title="Excluir com confirmação e verificação de pagamentos";});
   document.querySelectorAll('[data-action="edit"]').forEach(b=>{b.disabled=false;b.title="Editar cliente e renegociação no Supabase";});
-  const postBtn=$("postBtn"); if(postBtn){postBtn.disabled=true;postBtn.title="Mural compartilhado será conectado em uma etapa posterior";}
-  const collaboratorName=$("collaboratorName"); if(collaboratorName)collaboratorName.value=profile.nome||"";
+const postBtn=$("postBtn");
+if(postBtn){
+  postBtn.disabled=false;
+  postBtn.title="Publicar mensagem no mural da equipe";
+}
+const collaboratorName=$("collaboratorName");
+if(collaboratorName){
+  collaboratorName.value=profile.nome||"";
+  collaboratorName.readOnly=true;
+}
   renderAll();
 }
 function showDataError(table, err) {
